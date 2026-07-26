@@ -576,7 +576,7 @@ def render_html(agg, style, script):
       %s
     </section>
 """ % (cov["merge"], plain_table(["사람", "병합", "내역"], merge_rows))) if merge_rows else "",
-        "ident": plain_table(["사람", "author 문자열", "근거"], ident_rows),
+        "ident": plain_table(["사람", "Git 계정", "근거"], ident_rows),
         "checksum": checksum, "total": cov["total"], "merge": cov["merge"],
         "pre": cov["prefilter"], "msg": cov["message_only"],
         "cov_bar": cov_bar, "cov_grid": cov_grid,
@@ -655,7 +655,7 @@ def render_md(agg):
             w("| %s | %d건 | %s |" % (agg.name[m["who"]], m["count"], m.get("detail", "")))
         w("")
     w("## 신원 병합 근거\n")
-    w("| 사람 | author 문자열 | 근거 |")
+    w("| 사람 | Git 계정 | 근거 |")
     w("|---|---|---|")
     for i in a.get("identities", []):
         w("| %s (%d) | %s | %s |"

@@ -46,7 +46,7 @@
     }
   ],
 
-  "_comment_narratives": "헤더는 중분류 단위 이상으로만 만든다 (소분류마다 쪼개지 않는다). 문자열 안에 인라인 HTML을 써도 된다 — markdown 출력에서는 태그가 벗겨진다. 관용적으로 쓰는 것: <code class=\"sha\">sha</code>, <span class=\"by\" style=\"--pc: var(--p1)\">이름</span>.",
+  "_comment_narratives": "헤더는 중분류 단위 이상으로만 만든다 (소분류마다 쪼개지 않는다). 문자열 안에 인라인 HTML을 써도 된다 — markdown 출력에서는 태그가 벗겨진다. 관용적으로 쓰는 것: <span class=\"by\" style=\"--pc: var(--p1)\">이름</span>, <code class=\"sha\">sha</code>. evidence의 각 줄은 반드시 이 순서(이름이 SHA보다 왼쪽)로 쓴다 — SHA를 먼저 두면 목록을 훑을 때 누구 커밋인지 끝까지 읽어야 한다 (atio 시험 분석에서 실제로 이 순서가 뒤집혀 나온 적 있다).",
   "narratives": [
     {
       "title": "쓰기 경로",
@@ -56,7 +56,7 @@
       ],
       "callout": "<code class=\"sha\">c7d8e9f</code>의 메시지는 “cleanup”이지만 실제로는 재시도 횟수를 줄인 동작 변경이다.",
       "evidence": [
-        "<code class=\"sha\">a1b2c3d</code> 원자적 쓰기 최초 구현 · Alice"
+        "<span class=\"by\" style=\"--pc: var(--p1)\">Alice</span> <code class=\"sha\">a1b2c3d</code> 원자적 쓰기 최초 구현"
       ]
     }
   ],
@@ -73,6 +73,7 @@
     {"who": "alice", "count": 6, "detail": "PR #3 · #7 · #11"}
   ],
 
+  "_comment_identities": "authors는 오직 git author(이름/이메일) 문자열이다. 커밋 메시지 트레일러(Co-Authored-By 등)에 나온 이름은 여기 넣지 않는다 — 사람이든 AI 도구든 git author 필드에 없으면 이 분석이 다루는 인물이 아니다.",
   "identities": [
     {"slug": "alice", "authors": ["Alice <alice@example.com>", "alice-dev <1234+alice@users.noreply.github.com>"],
      "basis": "GitHub noreply 고유 ID 일치로 <b>자동 병합</b>."},
