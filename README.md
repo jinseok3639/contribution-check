@@ -86,4 +86,8 @@ references/analysis-example.json  analysis.json 스키마 예시
 
 ## 개발
 
-이 브랜치(`master`)는 배포용이라 스킬 파일만 있다. 설계 노트와 시험 분석 기록은 [`dev`](https://github.com/jinseok3639/contribution_check/tree/dev) 브랜치에 있다.
+이 브랜치(`master`)는 배포용이라 스킬 파일만 있다. 개발은 [`dev`](https://github.com/jinseok3639/contribution_check/tree/dev) 브랜치에서 한다.
+
+## 라이선스
+
+MIT — [LICENSE](LICENSE) 참고.
