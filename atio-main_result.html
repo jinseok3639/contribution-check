@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>atio 기여도 분석 — Pandas/Polars/NumPy용 원자적(atomic) 파일 쓰기 + 스냅샷 버전관리 Python 라이브러리 (main)</title>
+<title>atio 기여도 분석 — Pandas/Polars/NumPy 등 다양한 객체의 안전한 원자적 파일 쓰기 + 스냅샷 버전관리를 제공하는 Python 라이브러리 (main)</title>
 <style>
   :root {
     /* Tailwind CSS default palette (slate neutrals + blue/orange/violet/red accents) —
@@ -154,6 +154,7 @@
     font-size: 16px;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    overflow-wrap: anywhere;
   }
 
   .wrap {
@@ -275,6 +276,7 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    min-width: 0;
     transition: border-color 0.12s, background 0.12s, box-shadow 0.12s, transform 0.12s;
   }
 
@@ -289,6 +291,8 @@
     align-items: baseline;
     justify-content: space-between;
     gap: 10px;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .person-count {
@@ -299,7 +303,7 @@
     font-weight: 400;
   }
 
-  .person-blurb { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
+  .person-blurb { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; overflow-wrap: anywhere; }
 
   .filter-hint {
     font-size: 13px;
@@ -706,7 +710,7 @@
     display: flex; flex-wrap: wrap; gap: 4px 14px;
     margin-top: 10px; font-size: 12.5px; color: var(--ink-2);
   }
-  .clg-item { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .clg-item { display: inline-flex; align-items: center; gap: 5px; min-width: 0; }
   .clg-item b { color: var(--ink); font-variant-numeric: tabular-nums; }
   .clg-chip {
     width: 10px; height: 10px; border-radius: var(--radius-full);
@@ -762,7 +766,7 @@
 
   <header class="masthead">
     <div class="eyebrow">Contribution Check · 기능 단위 기여 분석</div>
-    <h1>atio — Pandas/Polars/NumPy용 원자적(atomic) 파일 쓰기 + 스냅샷 버전관리 Python 라이브러리</h1>
+    <h1>atio — Pandas/Polars/NumPy 등 다양한 객체의 안전한 원자적 파일 쓰기 + 스냅샷 버전관리를 제공하는 Python 라이브러리</h1>
     <dl class="facts">
       <div class="fact"><dt>Repository</dt><dd>atio</dd></div>
       <div class="fact"><dt>Branch</dt><dd>main</dd></div>
@@ -786,27 +790,27 @@
       <div class="people">
         <button class="person-card" type="button" aria-pressed="false" data-person="seojaeoh"
                 style="--pc: var(--p1); --pc-soft: var(--p1-soft)">
-          <span class="person-name">seojaeoh <span class="alias">(저장소 소유자 (GitHub: seojaeohcode))</span></span>
+          <span class="person-name">seojaeoh <span class="alias">(seojaeohcode / LAB-S\seoco / SEOJAEOH\seoco)</span></span>
           <span class="person-stats">
-            <span><b>50</b> 커밋<span style="color:var(--ink-3)"> · 병합 22</span></span><span><b>14</b>/32 기능</span><span><b>8</b> 주도</span>
+            <span><b>50</b> 커밋<span style="color:var(--ink-3)"> · 병합 22</span></span><span><b>13</b>/35 기능</span><span><b>9</b> 주도</span>
           </span>
-          <span class="person-blurb">AtomicWriter 코어 골격과 초기 플러그인 구조를 최초 구현했고, 이후 대부분의 기능 브랜치를 PR로 병합해 프로젝트를 통합·배포(PyPI deploy, Docker, apidoc)했다.</span>
+          <span class="person-blurb">AtomicWriter 초기 골격과 플러그인 구조를 설계했고, 이후 PR 병합·배포(3.0.0/3.1.0)·CI/Docker·API 문서(apidoc/Sphinx) 운영을 주로 맡았다.</span>
         </button>
-        <button class="person-card" type="button" aria-pressed="false" data-person="parkjinseok"
+        <button class="person-card" type="button" aria-pressed="false" data-person="jinseok"
                 style="--pc: var(--p2); --pc-soft: var(--p2-soft)">
-          <span class="person-name">박진석 <span class="alias">(realstone3639)</span></span>
+          <span class="person-name">realstone3639 (Park jinseok)</span>
           <span class="person-stats">
-            <span><b>46</b> 커밋<span style="color:var(--ink-3)"> · 병합 4</span></span><span><b>19</b>/32 기능</span><span><b>17</b> 주도</span>
+            <span><b>46</b> 커밋<span style="color:var(--ink-3)"> · 병합 4</span></span><span><b>24</b>/35 기능</span><span><b>17</b> 주도</span>
           </span>
-          <span class="person-blurb">스냅샷/버전관리 계열(write_snapshot·rollback·revert·tag_version·CLI·write_model_snapshot)을 거의 전담 구현했고, 의존성·라이선스 표기 정리도 맡았다.</span>
+          <span class="person-blurb">포맷별 쓰기 지원(pandas/polars/numpy/sql)부터 스냅샷·버전관리·롤백/리버트·모델 스냅샷 멀티프로세싱까지 core.py의 핵심 기능 대부분을 구현했다.</span>
         </button>
-        <button class="person-card" type="button" aria-pressed="false" data-person="choijangju"
+        <button class="person-card" type="button" aria-pressed="false" data-person="choi"
                 style="--pc: var(--p3); --pc-soft: var(--p3-soft)">
-          <span class="person-name">최장주 <span class="alias">(chjaju)</span></span>
+          <span class="person-name">최장주 (chjaju)</span>
           <span class="person-stats">
-            <span><b>18</b> 커밋<span style="color:var(--ink-3)"> · 병합 6</span></span><span><b>6</b>/32 기능</span><span><b>5</b> 주도</span>
+            <span><b>18</b> 커밋<span style="color:var(--ink-3)"> · 병합 6</span></span><span><b>6</b>/35 기능</span><span><b>4</b> 주도</span>
           </span>
-          <span class="person-blurb">테스트 시나리오(KeyboardInterrupt/OOM/CI 실패) 4건을 설계했고, 이후 GPL→MIT 라이선스 전환에 따른 Sphinx 문서 정리를 전담했다.</span>
+          <span class="person-blurb">장애 시나리오(KeyboardInterrupt/OOM/CI 실패) 테스트 자료를 만들고, GPL→MIT 라이선스 전환과 Sphinx 문서 정비를 주도했다.</span>
         </button>
       </div>
       <div class="filter-hint">
@@ -832,73 +836,51 @@
           <line class="grid" x1="42" y1="14.0" x2="796.0" y2="14.0"/>
           <text class="ax" x="33" y="18.0" text-anchor="end">50</text>
           <text class="ax" x="42.0" y="288" text-anchor="middle">07-18</text>
-          <text class="ax" x="216.5" y="288" text-anchor="middle">08-12</text>
-          <text class="ax" x="495.8" y="288" text-anchor="middle">09-21</text>
-          <text class="ax" x="621.5" y="288" text-anchor="middle">10-09</text>
+          <text class="ax" x="97.9" y="288" text-anchor="middle">07-26</text>
+          <text class="ax" x="237.5" y="288" text-anchor="middle">08-15</text>
+          <text class="ax" x="656.4" y="288" text-anchor="middle">10-14</text>
           <text class="ax" x="796.0" y="288" text-anchor="middle">11-03</text>
           <g class="series" data-person="seojaeoh" style="--pc: var(--p1)">
-          <polyline class="ln" points="42.0,255.9 62.9,255.9 76.9,250.9 83.9,235.8 97.9,220.6 111.8,220.6 118.8,210.6 146.7,205.5 216.5,190.4 223.5,129.9 230.5,114.8 237.5,104.7 265.4,99.7 391.1,89.6 446.9,74.5 460.9,64.4 467.9,64.4 495.8,64.4 502.8,64.4 509.8,64.4 516.7,64.4 530.7,64.4 537.7,64.4 544.7,59.4 551.6,49.3 614.5,49.3 621.5,49.3 628.4,49.3 635.4,44.2 656.4,44.2 670.3,44.2 677.3,44.2 726.2,29.1 740.1,19.0 796.0,14.0"/>
+          <polyline class="ln" points="42.0,255.9 62.9,255.9 83.9,235.8 97.9,220.6 118.8,210.6 223.5,129.9 237.5,104.7 460.9,64.4 530.7,64.4 551.6,49.3 656.4,44.2 677.3,44.2 740.1,19.0 796.0,14.0"/>
           <circle class="pt" cx="42.0" cy="255.9" r="2.5"/>
-          <circle class="pt" cx="76.9" cy="250.9" r="2.5"/>
           <circle class="pt" cx="83.9" cy="235.8" r="2.5"/>
           <circle class="pt" cx="97.9" cy="220.6" r="2.5"/>
           <circle class="pt" cx="118.8" cy="210.6" r="2.5"/>
-          <circle class="pt" cx="146.7" cy="205.5" r="2.5"/>
-          <circle class="pt" cx="216.5" cy="190.4" r="2.5"/>
           <circle class="pt" cx="223.5" cy="129.9" r="2.5"/>
-          <circle class="pt" cx="230.5" cy="114.8" r="2.5"/>
           <circle class="pt" cx="237.5" cy="104.7" r="2.5"/>
-          <circle class="pt" cx="265.4" cy="99.7" r="2.5"/>
-          <circle class="pt" cx="391.1" cy="89.6" r="2.5"/>
-          <circle class="pt" cx="446.9" cy="74.5" r="2.5"/>
           <circle class="pt" cx="460.9" cy="64.4" r="2.5"/>
-          <circle class="pt" cx="544.7" cy="59.4" r="2.5"/>
           <circle class="pt" cx="551.6" cy="49.3" r="2.5"/>
-          <circle class="pt" cx="635.4" cy="44.2" r="2.5"/>
-          <circle class="pt" cx="726.2" cy="29.1" r="2.5"/>
+          <circle class="pt" cx="656.4" cy="44.2" r="2.5"/>
           <circle class="pt" cx="740.1" cy="19.0" r="2.5"/>
           <circle class="pt" cx="796.0" cy="14.0" r="2.5"/>
           <text class="lbl" x="806.0" y="18.0">seojaeoh 50</text>
           </g>
-          <g class="series" data-person="parkjinseok" style="--pc: var(--p2)">
-          <polyline class="ln" points="42.0,266.0 62.9,261.0 76.9,261.0 83.9,261.0 97.9,255.9 111.8,245.8 118.8,240.8 146.7,240.8 216.5,235.8 223.5,200.5 230.5,200.5 237.5,200.5 265.4,200.5 391.1,200.5 446.9,180.3 460.9,165.2 467.9,150.1 495.8,140.0 502.8,135.0 509.8,129.9 516.7,124.9 530.7,109.8 537.7,104.7 544.7,104.7 551.6,104.7 614.5,99.7 621.5,84.6 628.4,79.5 635.4,79.5 656.4,54.3 670.3,54.3 677.3,54.3 726.2,54.3 740.1,44.2 796.0,34.2"/>
+          <g class="series" data-person="jinseok" style="--pc: var(--p2)">
+          <polyline class="ln" points="42.0,266.0 62.9,261.0 83.9,261.0 97.9,255.9 118.8,240.8 223.5,200.5 237.5,200.5 460.9,165.2 530.7,109.8 551.6,104.7 656.4,54.3 677.3,54.3 740.1,44.2 796.0,34.2"/>
           <circle class="pt" cx="42.0" cy="266.0" r="2.5"/>
           <circle class="pt" cx="62.9" cy="261.0" r="2.5"/>
           <circle class="pt" cx="97.9" cy="255.9" r="2.5"/>
-          <circle class="pt" cx="111.8" cy="245.8" r="2.5"/>
           <circle class="pt" cx="118.8" cy="240.8" r="2.5"/>
-          <circle class="pt" cx="216.5" cy="235.8" r="2.5"/>
           <circle class="pt" cx="223.5" cy="200.5" r="2.5"/>
-          <circle class="pt" cx="446.9" cy="180.3" r="2.5"/>
           <circle class="pt" cx="460.9" cy="165.2" r="2.5"/>
-          <circle class="pt" cx="467.9" cy="150.1" r="2.5"/>
-          <circle class="pt" cx="495.8" cy="140.0" r="2.5"/>
-          <circle class="pt" cx="502.8" cy="135.0" r="2.5"/>
-          <circle class="pt" cx="509.8" cy="129.9" r="2.5"/>
-          <circle class="pt" cx="516.7" cy="124.9" r="2.5"/>
           <circle class="pt" cx="530.7" cy="109.8" r="2.5"/>
-          <circle class="pt" cx="537.7" cy="104.7" r="2.5"/>
-          <circle class="pt" cx="614.5" cy="99.7" r="2.5"/>
-          <circle class="pt" cx="621.5" cy="84.6" r="2.5"/>
-          <circle class="pt" cx="628.4" cy="79.5" r="2.5"/>
+          <circle class="pt" cx="551.6" cy="104.7" r="2.5"/>
           <circle class="pt" cx="656.4" cy="54.3" r="2.5"/>
           <circle class="pt" cx="740.1" cy="44.2" r="2.5"/>
           <circle class="pt" cx="796.0" cy="34.2" r="2.5"/>
-          <text class="lbl" x="806.0" y="38.2">박진석 46</text>
+          <text class="lbl" x="806.0" y="38.2">realstone3639 (Park jinseok) 46</text>
           </g>
-          <g class="series" data-person="choijangju" style="--pc: var(--p3)">
-          <polyline class="ln" points="42.0,266.0 62.9,261.0 76.9,261.0 83.9,255.9 97.9,250.9 111.8,250.9 118.8,245.8 146.7,245.8 216.5,245.8 223.5,240.8 230.5,235.8 237.5,225.7 265.4,225.7 391.1,225.7 446.9,225.7 460.9,225.7 467.9,225.7 495.8,225.7 502.8,225.7 509.8,225.7 516.7,225.7 530.7,225.7 537.7,225.7 544.7,225.7 551.6,225.7 614.5,225.7 621.5,225.7 628.4,225.7 635.4,225.7 656.4,225.7 670.3,220.6 677.3,175.3 726.2,175.3 740.1,175.3 796.0,175.3"/>
+          <g class="series" data-person="choi" style="--pc: var(--p3)">
+          <polyline class="ln" points="42.0,266.0 62.9,261.0 83.9,255.9 97.9,250.9 118.8,245.8 223.5,240.8 237.5,225.7 460.9,225.7 530.7,225.7 551.6,225.7 656.4,225.7 677.3,175.3 740.1,175.3 796.0,175.3"/>
           <circle class="pt" cx="42.0" cy="266.0" r="2.5"/>
           <circle class="pt" cx="62.9" cy="261.0" r="2.5"/>
           <circle class="pt" cx="83.9" cy="255.9" r="2.5"/>
           <circle class="pt" cx="97.9" cy="250.9" r="2.5"/>
           <circle class="pt" cx="118.8" cy="245.8" r="2.5"/>
           <circle class="pt" cx="223.5" cy="240.8" r="2.5"/>
-          <circle class="pt" cx="230.5" cy="235.8" r="2.5"/>
           <circle class="pt" cx="237.5" cy="225.7" r="2.5"/>
-          <circle class="pt" cx="670.3" cy="220.6" r="2.5"/>
           <circle class="pt" cx="677.3" cy="175.3" r="2.5"/>
-          <text class="lbl" x="806.0" y="179.3">최장주 18</text>
+          <text class="lbl" x="806.0" y="179.3">최장주 (chjaju) 18</text>
           </g>
           </svg>
       </div>
@@ -906,22 +888,22 @@
 
     <div class="duo">
       <div class="card">
-        <div class="card-h">기능 커버리지 <span>소분류 32개 중 관여</span></div>
+        <div class="card-h">기능 커버리지 <span>소분류 35개 중 관여</span></div>
         <div class="mrow-group">
           <div class="mrow" data-person="seojaeoh" style="--pc: var(--p1)">
             <span class="mrow-nm">seojaeoh</span>
-            <span class="mrow-track"><span class="mrow-fill" style="width: 43.8%"></span></span>
-            <span class="mrow-val">14<span class="mrow-den">/32</span></span>
+            <span class="mrow-track"><span class="mrow-fill" style="width: 37.1%"></span></span>
+            <span class="mrow-val">13<span class="mrow-den">/35</span></span>
           </div>
-          <div class="mrow" data-person="parkjinseok" style="--pc: var(--p2)">
-            <span class="mrow-nm">박진석</span>
-            <span class="mrow-track"><span class="mrow-fill" style="width: 59.4%"></span></span>
-            <span class="mrow-val">19<span class="mrow-den">/32</span></span>
+          <div class="mrow" data-person="jinseok" style="--pc: var(--p2)">
+            <span class="mrow-nm">realstone3639 (Park jinseok)</span>
+            <span class="mrow-track"><span class="mrow-fill" style="width: 68.6%"></span></span>
+            <span class="mrow-val">24<span class="mrow-den">/35</span></span>
           </div>
-          <div class="mrow" data-person="choijangju" style="--pc: var(--p3)">
-            <span class="mrow-nm">최장주</span>
-            <span class="mrow-track"><span class="mrow-fill" style="width: 18.8%"></span></span>
-            <span class="mrow-val">6<span class="mrow-den">/32</span></span>
+          <div class="mrow" data-person="choi" style="--pc: var(--p3)">
+            <span class="mrow-nm">최장주 (chjaju)</span>
+            <span class="mrow-track"><span class="mrow-fill" style="width: 17.1%"></span></span>
+            <span class="mrow-val">6<span class="mrow-den">/35</span></span>
           </div>
         </div>
       </div>
@@ -930,17 +912,17 @@
         <div class="mrow-group">
           <div class="mrow" data-person="seojaeoh" style="--pc: var(--p1)">
             <span class="mrow-nm">seojaeoh</span>
-            <span class="mrow-stack"><span class="seg s-lead" style="flex: 8" title="주도 8">8</span><span class="seg s-part" style="flex: 4" title="참여 4">4</span><span class="seg s-fix" style="flex: 2" title="수정 2">2</span></span>
-            <span class="mrow-val">14</span>
+            <span class="mrow-stack"><span class="seg s-lead" style="flex: 9" title="주도 9">9</span><span class="seg s-fix" style="flex: 4" title="수정 4">4</span></span>
+            <span class="mrow-val">13</span>
           </div>
-          <div class="mrow" data-person="parkjinseok" style="--pc: var(--p2)">
-            <span class="mrow-nm">박진석</span>
-            <span class="mrow-stack"><span class="seg s-lead" style="flex: 17" title="주도 17">17</span><span class="seg s-fix" style="flex: 2" title="수정 2">2</span></span>
-            <span class="mrow-val">19</span>
+          <div class="mrow" data-person="jinseok" style="--pc: var(--p2)">
+            <span class="mrow-nm">realstone3639 (Park jinseok)</span>
+            <span class="mrow-stack"><span class="seg s-lead" style="flex: 17" title="주도 17">17</span><span class="seg s-fix" style="flex: 7" title="수정 7">7</span></span>
+            <span class="mrow-val">24</span>
           </div>
-          <div class="mrow" data-person="choijangju" style="--pc: var(--p3)">
-            <span class="mrow-nm">최장주</span>
-            <span class="mrow-stack"><span class="seg s-lead" style="flex: 5" title="주도 5">5</span><span class="seg s-fix" style="flex: 1" title="수정 1">1</span></span>
+          <div class="mrow" data-person="choi" style="--pc: var(--p3)">
+            <span class="mrow-nm">최장주 (chjaju)</span>
+            <span class="mrow-stack"><span class="seg s-lead" style="flex: 4" title="주도 4">4</span><span class="seg s-fix" style="flex: 2" title="수정 2">2</span></span>
             <span class="mrow-val">6</span>
           </div>
         </div>
@@ -948,9 +930,9 @@
     </div>
 
     <div class="kpi-strip">
-      <div class="kpi"><span class="kpi-num">32</span><span class="kpi-lab">소분류 — 기여 판단의 최소 단위</span></div>
+      <div class="kpi"><span class="kpi-num">35</span><span class="kpi-lab">소분류 — 기여 판단의 최소 단위</span></div>
       <div class="kpi"><span class="kpi-num">7</span><span class="kpi-lab">2인 이상이 손댄 소분류</span></div>
-      <div class="kpi"><span class="kpi-num" style="color: var(--flag)">2<span style="font-size:15px;color:var(--ink-3)">/10</span></span><span class="kpi-lab">커밋 메시지 &ne; 실제 diff<br><span style="color:var(--ink-3)">diff를 직접 읽은 커밋 중</span></span></div>
+      <div class="kpi"><span class="kpi-num" style="color: var(--flag)">1<span style="font-size:15px;color:var(--ink-3)">/10</span></span><span class="kpi-lab">커밋 메시지 &ne; 실제 diff<br><span style="color:var(--ink-3)">diff를 직접 읽은 커밋 중</span></span></div>
       <div class="kpi"><span class="kpi-num">10<span style="font-size:15px;color:var(--ink-3)">/82</span></span><span class="kpi-lab">diff를 직접 읽은 커밋 (병합 제외)</span></div>
     </div>
 
@@ -958,7 +940,7 @@
 
   <div class="panel" id="p-matrix" role="tabpanel" hidden>
     <section>
-      <h2>기능 분류 × 기여 <span class="h2-note">대분류 7 · 중분류 20 · 소분류 32</span></h2>
+      <h2>기능 분류 × 기여 <span class="h2-note">대분류 3 · 중분류 14 · 소분류 35</span></h2>
 
       <div class="legend-key">
         <span><span class="mark lead" style="--mc: var(--ink-2); --mc-soft: var(--surface-2)"><span class="dot">●</span> 주도</span> &nbsp;처음 만든 사람</span>
@@ -980,191 +962,196 @@
           </thead>
           <tbody>
 
-            <tr class="leaf-row" data-people="seojaeoh">
-            <td class="spine spine-major" rowspan="4">A. 코어 엔진 (atomic write)</td>
-            <td class="spine spine-mid" rowspan="2"><span class="idx">00</span>A.1 AtomicWriter 핵심 구조<span class="leafcount">소분류 2</span></td>
-            <td class="leaf">임시파일→검증→원자적 치환 골격<span class="anchor">core.py: write()</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">b703d367</code><code class="sha">a67ed672</code><span class="conf">메시지 추정</span></div></td>
+            <tr class="leaf-row" data-people="seojaeoh jinseok">
+            <td class="spine spine-major" rowspan="11">A. 원자적 쓰기 코어</td>
+            <td class="spine spine-mid" rowspan="3"><span class="idx">00</span>A.1 AtomicWriter 기본 구현 &amp; 플러그인 구조<span class="leafcount">소분류 3</span></td>
+            <td class="leaf">AtomicWriter 핵심 로직 &amp; 초기 골격<span class="anchor">write()</span></td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">a67ed672</code><span class="conf">메시지 추정</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">8194ec60</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="leaf">경로/의존성 초기 버그 수정</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p2)">박진석</b><code class="sha">4ac197ed</code><span class="conf">메시지 추정</span></div></td>
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">플러그인 등록 구조 정리 (register_writer/get_writer)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">78aa0833</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="seojaeoh parkjinseok">
-            <td class="spine spine-mid" rowspan="2"><span class="idx">01</span>A.2 플러그인 구조<span class="leafcount">소분류 2</span></td>
-            <td class="leaf">register_writer / get_writer 등록 체계<span class="anchor">plugins.py</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">a67ed672</code><span class="conf">메시지 추정</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p2)">박진석</b><code class="sha">78aa0833</code><span class="conf">메시지 추정</span></div></td>
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">import 경로/패키징 문제 수정</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">4ac197ed</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="leaf">pandas/polars/numpy 라이터 확장</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">b12b951c</code><code class="sha">40ab705a</code><span class="conf">메시지 추정</span></div></td>
+            <tr class="leaf-row" data-people="jinseok seojaeoh">
+            <td class="spine spine-mid" rowspan="3"><span class="idx">01</span>A.2 포맷별 쓰기 지원<span class="leafcount">소분류 3</span></td>
+            <td class="leaf">Pandas/Polars 지원 (csv/parquet/excel/json 등)<span class="anchor">WRITER_MAPPING</span></td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">b12b951c</code><span class="conf">메시지 추정</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">b09d8bb6</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="spine spine-major" rowspan="3">B. 포맷 지원</td>
-            <td class="spine spine-mid" rowspan="2"><span class="idx">02</span>B.1 데이터프레임 포맷<span class="leafcount">소분류 2</span></td>
-            <td class="leaf">parquet/csv/excel/json 기본 지원</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">b12b951c</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="seojaeoh">
-            <td class="leaf">xlsx &amp; sql 포맷 수정</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">b09d8bb6</code><code class="sha">acbd47eb</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="spine spine-mid" rowspan="1"><span class="idx">03</span>B.2 NumPy 포맷<span class="leafcount">소분류 1</span></td>
-            <td class="leaf">npy/npz 다중 배열 쓰기 지원</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">40ab705a</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="spine spine-major" rowspan="7">C. 스냅샷 / 버전관리</td>
-            <td class="spine spine-mid" rowspan="1"><span class="idx">04</span>C.1 스냅샷 쓰기<span class="leafcount">소분류 1</span></td>
-            <td class="leaf">write_snapshot 초기 구현 → arrow → parquet+datalake → compression<span class="anchor">core.py: write_snapshot()</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">2dc07f34</code><code class="sha">854d3725</code><code class="sha">e2cf3f97</code><code class="sha">8f5e663a</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="spine spine-mid" rowspan="1"><span class="idx">05</span>C.2 스냅샷 조회<span class="leafcount">소분류 1</span></td>
-            <td class="leaf">read_table 버전 조회, list_snapshots/tag_version<span class="anchor">core.py</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">30526dd4</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="parkjinseok seojaeoh">
-            <td class="spine spine-mid" rowspan="2"><span class="idx">06</span>C.3 스냅샷 삭제/롤백/되돌리기<span class="leafcount">소분류 2</span></td>
-            <td class="leaf">delete_version(스냅샷 삭제), rollback, revert(+동시성 문제 해결)<span class="anchor">core.py</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">3855ac2f</code><code class="sha">37667cc8</code><span class="conf read">diff 확인</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">◐</span>참여</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">465be765</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="leaf">expire_snapshots 기능</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">0607bf38</code><code class="sha">4f3897ab</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="spine spine-mid" rowspan="2"><span class="idx">07</span>C.4 모델 스냅샷 (write/read_model_snapshot)<span class="leafcount">소분류 2</span></td>
-            <td class="leaf">write_model_snapshot 저장 구현 → 멀티스레딩 → 멀티프로세싱<span class="anchor">core.py: write_model_snapshot()</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">5a0f50c1</code><code class="sha">61411651</code><code class="sha">06bc94d3</code><code class="sha">e10c56bb</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="leaf">read_model_snapshot 구현/수정</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">a9c94fad</code><code class="sha">f7f112ae</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="spine spine-mid" rowspan="1"><span class="idx">08</span>C.5 CLI<span class="leafcount">소분류 1</span></td>
-            <td class="leaf">list_snapshots/tag_version/revert/delete_version 커맨드<span class="anchor">cli.py</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">8a3cd8fd</code><code class="sha">8397f05e</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="spine spine-major" rowspan="4">D. 운영 기능 (관측성/성능)</td>
-            <td class="spine spine-mid" rowspan="1"><span class="idx">09</span>D.1 진행률 표시<span class="leafcount">소분류 1</span></td>
-            <td class="leaf">progress bar 구현 + 예제, utils 통합<span class="anchor">utils.py: ProgressBar</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">ae26078a</code><code class="sha">8194ec60</code><span class="conf">메시지 추정</span></div></td>
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">NumPy 지원 (단일/다중 array)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">40ab705a</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
             <tr class="leaf-row" data-people="seojaeoh">
-            <td class="spine spine-mid" rowspan="1"><span class="idx">10</span>D.2 에러 진단<span class="leafcount">소분류 1</span></td>
-            <td class="leaf">error_diagnosis / verbose 진단 로깅<span class="anchor">core.py: write() verbose</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">4b598c47</code><span class="flag" title="메시지는 &quot;add error_diagnosis function&quot; 한 줄이지만 실제 diff는 write()에 verbose 플래그와 단계별(setup/write_call/replace) 타이밍 로깅을 추가하고 테스트 시나리오 7개를 동반 추가한 변경.">&ne;</span><span class="conf read">diff 확인</span></div></td>
+            <td class="leaf">SQL/Database 쓰기</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">acbd47eb</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="spine spine-mid" rowspan="2"><span class="idx">11</span>D.3 성능 벤치마크<span class="leafcount">소분류 2</span></td>
-            <td class="leaf">benchmark_write_speed / benchmark_parquet_speed</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">579443bc</code><code class="sha">8f5e663a</code><span class="conf">메시지 추정</span></div></td>
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="spine spine-mid" rowspan="1"><span class="idx">02</span>A.3 진행률 표시<span class="leafcount">소분류 1</span></td>
+            <td class="leaf">ProgressBar 구현 및 write 연동<span class="anchor">ProgressBar</span></td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">ae26078a</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="leaf">core.py 멀티쓰레딩 지원</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">61411651</code><span class="conf">메시지 추정</span></div></td>
+            <tr class="leaf-row" data-people="choi">
+            <td class="spine spine-mid" rowspan="4"><span class="idx">03</span>A.4 장애 시나리오 대응<span class="leafcount">소분류 4</span></td>
+            <td class="leaf">KeyboardInterrupt 시나리오</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p3)">최장주 (chjaju)</b><code class="sha">2c7bfbac</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="choijangju seojaeoh">
-            <td class="spine spine-major" rowspan="3">E. 테스트 시나리오 (회복력 검증)</td>
-            <td class="spine spine-mid" rowspan="1"><span class="idx">12</span>E.1 KeyboardInterrupt 시나리오<span class="leafcount">소분류 1</span></td>
-            <td class="leaf">시나리오 1: Ctrl+C 안전성<span class="anchor">tests/scenarios/1_keyboard_interrupt</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p3)">최장주</b><code class="sha">2c7bfbac</code><span class="conf">메시지 추정</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">0bb6800e</code><span class="conf read">diff 확인</span></div></td>
+            <tr class="leaf-row" data-people="choi">
+            <td class="leaf">OOM 시나리오 (atomic/non-atomic)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p3)">최장주 (chjaju)</b><code class="sha">040d9475</code><code class="sha">79aa3b27</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="choijangju">
-            <td class="spine spine-mid" rowspan="1"><span class="idx">13</span>E.2 OOM 시나리오<span class="leafcount">소분류 1</span></td>
-            <td class="leaf">시나리오 2 (OOM) / 시나리오 4 (non-atomic 비교)<span class="anchor">tests/scenarios/2_oom, 4_oomnpa</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p3)">최장주</b><code class="sha">040d9475</code><code class="sha">79aa3b27</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="choijangju">
-            <td class="spine spine-mid" rowspan="1"><span class="idx">14</span>E.3 CI/CD 실패 시나리오<span class="leafcount">소분류 1</span></td>
-            <td class="leaf">시나리오 3: CI 실패 케이스<span class="anchor">tests/scenarios/3_ci_failure</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p3)">최장주</b><code class="sha">4ac87a41</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="choijangju seojaeoh">
-            <td class="spine spine-major" rowspan="9">F. 문서 / 라이선스 / 배포</td>
-            <td class="spine spine-mid" rowspan="3"><span class="idx">15</span>F.1 README / 문서화<span class="leafcount">소분류 3</span></td>
-            <td class="leaf">README 반복 갱신</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p3)">최장주</b><code class="sha">f108bb3a</code><code class="sha">ce2744de</code><code class="sha">44ed2f5b</code><span class="conf">메시지 추정</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">◐</span>참여</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">b9957bc9</code><code class="sha">d4a93dc2</code><span class="conf">메시지 추정</span></div></td>
-            </tr>
-
-            <tr class="leaf-row" data-people="seojaeoh choijangju">
-            <td class="leaf">Sphinx 문서 생성/빌드<span class="anchor">docs/</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">7b158894</code><code class="sha">423b50c7</code><span class="conf">메시지 추정</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p3)">최장주</b><code class="sha">4111271a</code><span class="conf read">diff 확인</span></div></td>
+            <tr class="leaf-row" data-people="choi">
+            <td class="leaf">CI/CD 실패 시나리오</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p3)">최장주 (chjaju)</b><code class="sha">4ac87a41</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
             <tr class="leaf-row" data-people="seojaeoh">
-            <td class="leaf">API 문서(apidoc) 생성<span class="anchor">apidoc/</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">cc8edfa3</code><code class="sha">c5357514</code><span class="conf read">diff 확인</span></div></td>
+            <td class="leaf">오류 진단(verbose 성능 진단 로그) 기능<span class="anchor">error_diagnosis</span></td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">4b598c47</code><span class="conf read">diff 확인</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="choijangju">
-            <td class="spine spine-mid" rowspan="2"><span class="idx">16</span>F.2 라이선스 정리 (GPL → MIT 전환)<span class="leafcount">소분류 2</span></td>
-            <td class="leaf">GPL 자산 제거 + alabaster 테마 전환</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p3)">최장주</b><code class="sha">20fd3c0a</code><code class="sha">f7493c3b</code><code class="sha">7bac1a9c</code><span class="flag" title="7bac1a9c는 메시지가 &quot;GPL license cleanup - complete MIT transition&quot;으로 크게 들리지만 실제 diff는 .gitignore 4줄 추가뿐. 실제 GPL 제거 작업은 앞선 20fd3c0a/f7493c3b 두 커�밋에서 이루어졌다.">&ne;</span><span class="conf read">diff 확인</span></div></td>
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="spine spine-major" rowspan="12">B. 스냅샷 &amp; 버전 관리</td>
+            <td class="spine spine-mid" rowspan="3"><span class="idx">04</span>B.1 스냅샷 기본 기능<span class="leafcount">소분류 3</span></td>
+            <td class="leaf">write_snapshot 초기 구현<span class="anchor">write_snapshot()</span></td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">2dc07f34</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="parkjinseok seojaeoh">
-            <td class="leaf">라이선스 명시/헤더 추가<span class="anchor">LICENSE/</span></td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">3b7a8a50</code><code class="sha">1558a41b</code><code class="sha">48411ea3</code><code class="sha">d8a17b76</code><span class="conf read">diff 확인</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">◐</span>참여</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">3bcfd600</code><span class="conf read">diff 확인</span></div></td>
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">스냅샷 포맷 변경 (arrow → parquet, datalake export)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">854d3725</code><code class="sha">e2cf3f97</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="parkjinseok seojaeoh">
-            <td class="spine spine-mid" rowspan="3"><span class="idx">17</span>F.3 배포/의존성 관리<span class="leafcount">소분류 3</span></td>
-            <td class="leaf">pyproject.toml / requirements.txt 의존성 정리</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">8d639471</code><code class="sha">1b593676</code><code class="sha">bdb688c1</code><code class="sha">a609f190</code><code class="sha">fd526622</code><span class="conf">메시지 추정</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">◐</span>참여</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">7060b92c</code><code class="sha">7066bec1</code><code class="sha">d5b98603</code><code class="sha">90368f4a</code><span class="conf">메시지 추정</span></div></td>
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">compression 지원</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">8f5e663a</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="spine spine-mid" rowspan="3"><span class="idx">05</span>B.2 버전 조회/관리<span class="leafcount">소분류 3</span></td>
+            <td class="leaf">list_snapshots / tag_version</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">30526dd4</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">snapshot 삭제(delete_version)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">3855ac2f</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">expire_snapshots (만료 기능)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">0607bf38</code><code class="sha">4f3897ab</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
             <tr class="leaf-row" data-people="seojaeoh">
-            <td class="leaf">배포 워크플로 (PyPI deploy, workflow 버전)</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">83de27a4</code><code class="sha">d03d0f86</code><code class="sha">9337d04e</code><span class="conf">메시지 추정</span></div></td>
+            <td class="spine spine-mid" rowspan="2"><span class="idx">06</span>B.3 롤백 &amp; 리버트<span class="leafcount">소분류 2</span></td>
+            <td class="leaf">rollback 구현<span class="anchor">rollback()</span></td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">465be765</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">revert 구현 및 동시성 문제 해결(FileLock)<span class="anchor">revert()</span></td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">37667cc8</code><span class="conf read">diff 확인</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="spine spine-mid" rowspan="2"><span class="idx">07</span>B.4 모델 스냅샷<span class="leafcount">소분류 2</span></td>
+            <td class="leaf">write_model_snapshot (멀티프로세싱/청크 분할)<span class="anchor">write_model_snapshot()</span></td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">5a0f50c1</code><code class="sha">06bc94d3</code><code class="sha">61411651</code><code class="sha">e10c56bb</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">read_model_snapshot (멀티쓰레드 재조립)<span class="anchor">read_model_snapshot()</span></td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">a9c94fad</code><code class="sha">f7f112ae</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="spine spine-mid" rowspan="2"><span class="idx">08</span>B.5 CLI 도구<span class="leafcount">소분류 2</span></td>
+            <td class="leaf">CLI 명령어 추가 (list-snapshots/tag-version/revert/delete-version)<span class="anchor">cli.py</span></td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">8a3cd8fd</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">CLI 재귀참조 문제 해결</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">8397f05e</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="spine spine-major" rowspan="12">C. 품질/성능/운영</td>
+            <td class="spine spine-mid" rowspan="2"><span class="idx">09</span>C.1 테스트<span class="leafcount">소분류 2</span></td>
+            <td class="leaf">핵심/스냅샷 테스트 (test_core, test_snapshot 등)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">2ebfd168</code><code class="sha">1bf28cc0</code><code class="sha">70d80a04</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">장애/진단 테스트 정리 (diagnostic_logging/error_diagnosis 등)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">0bb6800e</code><span class="flag" title="메시지는 &#x27;주석처리 및 버그 수정&#x27;이지만 실제로는 4개 테스트 파일 전체를 주석 처리(비활성화)하고 나머지에서 버그를 고친 것 — 테스트 커버리지가 줄어드는 방향의 변경이라 그대로 표기.">&ne;</span><span class="conf read">diff 확인</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok seojaeoh">
+            <td class="spine spine-mid" rowspan="1"><span class="idx">10</span>C.2 벤치마크<span class="leafcount">소분류 1</span></td>
+            <td class="leaf">write 속도 / parquet 속도 벤치마크</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">579443bc</code><span class="conf">메시지 추정</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">917c44e3</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="jinseok seojaeoh">
+            <td class="spine spine-mid" rowspan="3"><span class="idx">11</span>C.3 배포/의존성 관리<span class="leafcount">소분류 3</span></td>
+            <td class="leaf">의존성 정비 (pyproject.toml/requirements)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">1b593676</code><code class="sha">8d639471</code><code class="sha">a609f190</code><code class="sha">bdb688c1</code><code class="sha">fd526622</code><span class="conf">메시지 추정</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">423b50c7</code><code class="sha">7060b92c</code><code class="sha">7066bec1</code><code class="sha">90368f4a</code><code class="sha">d5b98603</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
             <tr class="leaf-row" data-people="seojaeoh">
-            <td class="leaf">Docker 배포<span class="anchor">Dockerfile</span></td>
+            <td class="leaf">버전 배포 (3.0.0/3.1.0, deploy lib)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">83de27a4</code><code class="sha">9337d04e</code><code class="sha">d03d0f86</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="seojaeoh">
+            <td class="leaf">Docker 지원<span class="anchor">Dockerfile</span></td>
             <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">40d9fe5b</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
+            <tr class="leaf-row" data-people="seojaeoh choi">
+            <td class="spine spine-mid" rowspan="4"><span class="idx">12</span>C.4 문서화<span class="leafcount">소분류 4</span></td>
+            <td class="leaf">README 작성/갱신</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">b703d367</code><code class="sha">44ed2f5b</code><code class="sha">b9957bc9</code><code class="sha">d4a93dc2</code><span class="conf">메시지 추정</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p3)">최장주 (chjaju)</b><code class="sha">ce2744de</code><code class="sha">f108bb3a</code><span class="conf">메시지 추정</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="seojaeoh choi">
+            <td class="leaf">Sphinx 문서 빌드 및 API 문서(apidoc)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">7b158894</code><code class="sha">c5357514</code><code class="sha">c7bfb517</code><code class="sha">cc8edfa3</code><span class="conf read">diff 확인</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p3)">최장주 (chjaju)</b><code class="sha">4111271a</code><code class="sha">84bf707c</code><span class="conf read">diff 확인</span></div></td>
+            </tr>
+
+            <tr class="leaf-row" data-people="choi jinseok seojaeoh">
+            <td class="leaf">라이선스 정비 (GPL → MIT 전환)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p3); --mc-soft: var(--p3-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p3)">최장주 (chjaju)</b><code class="sha">20fd3c0a</code><code class="sha">7bac1a9c</code><code class="sha">a188180e</code><code class="sha">f7493c3b</code><span class="conf read">diff 확인</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">1558a41b</code><code class="sha">3b7a8a50</code><code class="sha">48411ea3</code><code class="sha">d8a17b76</code><span class="conf read">diff 확인</span></div><div class="contrib-line"><span class="mark" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">3bcfd600</code><span class="conf read">diff 확인</span></div></td>
+            </tr>
+
             <tr class="leaf-row" data-people="seojaeoh">
-            <td class="spine spine-mid" rowspan="1"><span class="idx">18</span>F.4 프로젝트 운영 문서<span class="leafcount">소분류 1</span></td>
-            <td class="leaf">CODE_OF_CONDUCT / CONTRIBUTING / 이슈 템플릿</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">0216dea4</code><code class="sha">1e352935</code><code class="sha">f2ba4dfd</code><code class="sha">cd5f7d58</code><span class="conf">메시지 추정</span></div></td>
+            <td class="leaf">기타 커뮤니티 문서 (CODE_OF_CONDUCT, CONTRIBUTING, 이슈템플릿)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">seojaeoh</b><code class="sha">0216dea4</code><code class="sha">1e352935</code><code class="sha">cd5f7d58</code><code class="sha">f2ba4dfd</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="spine spine-major" rowspan="2">G. 발표/데모 준비</td>
-            <td class="spine spine-mid" rowspan="2"><span class="idx">19</span>G.1 발표 자료 및 데모<span class="leafcount">소분류 2</span></td>
-            <td class="leaf">demo_atio_usage / 발표용 스크립트</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">21c53a41</code><code class="sha">72a5645a</code><code class="sha">afebbded</code><span class="conf">메시지 추정</span></div></td>
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="spine spine-mid" rowspan="2"><span class="idx">13</span>C.5 데모/시연<span class="leafcount">소분류 2</span></td>
+            <td class="leaf">데모 스크립트 (demo_atio_usage, snapshot 데모)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">afebbded</code><code class="sha">b88367cf</code><code class="sha">21c53a41</code><code class="sha">72a5645a</code><span class="conf read">diff 확인</span></div></td>
             </tr>
 
-            <tr class="leaf-row" data-people="parkjinseok">
-            <td class="leaf">Presentation Prepare (기능 시연 코드)</td>
-            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">박진석</b><code class="sha">5511ef15</code><code class="sha">b88367cf</code><span class="conf read">diff 확인</span></div></td>
+            <tr class="leaf-row" data-people="jinseok">
+            <td class="leaf">발표 준비 (presentation, prepareModelPresentation)</td>
+            <td class="contrib"><div class="contrib-line"><span class="mark lead" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p2)">realstone3639 (Park jinseok)</b><code class="sha">5511ef15</code><span class="conf">메시지 추정</span></div></td>
             </tr>
 
           </tbody>
@@ -1179,187 +1166,189 @@
       <div class="narratives">
 
         <details class="nar" open>
-          <summary>A.1 AtomicWriter 핵심 구조
+          <summary>AtomicWriter 기본 구현 & 플러그인 구조
             <span class="who-strip"><i class="who-pip" style="--pc: var(--p1)"></i><i class="who-pip" style="--pc: var(--p2)"></i></span>
           </summary>
           <div class="nar-body">
-            <p><span class="by" style="--pc: var(--p1)">seojaeoh</span>가 <code class="sha">a67ed672</code>(Initial commit 직후 첫 기능 커밋)에서 임시파일 생성 → 검증 → 원자적 치환이라는 AtomicWriter의 기본 골격과 플러그인 구조, 초기 테스트/예제를 한 커밋에 함께 만들었다.</p>
-            <p>이후 <span class="by" style="--pc: var(--p2)">박진석</span>가 <code class="sha">4ac197ed</code>에서 examples 모듈의 import 경로 문제를 수정했다.</p>
+            <p><span class="by" style="--pc: var(--p1)">seojaeoh</span>가 <code class="sha">a67ed672</code>(Initial commit 직후)에서 임시파일→검증→원자적 교체(os.replace)로 이어지는 AtomicWriter 핵심 구조와 register_writer/get_writer 플러그인 매핑을 처음 만들었다. 이후 <span class="by" style="--pc: var(--p2)">jinseok</span>이 <code class="sha">4ac197ed</code>에서 import 경로 문제를 고치고, <code class="sha">8194ec60</code>에서 progress 모듈을 utils로 통합하며 패키지 구조(atomicwriter → atio 전환기)를 정리했다. <code class="sha">78aa0833</code>에서는 __init__.py의 register_writer 노출을 제외해 공개 API 표면을 줄였다.</p>
             <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">b703d367</code> Initial commit (LICENSE, README)</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">a67ed672</code> AtomicWriter 핵심 기능·플러그인 구조·테스트·예제 최초 구현</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">4ac197ed</code> import atomicwriter 경로 문제 해결</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">a67ed672</code> AtomicWriter 핵심 기능·플러그인 구조·테스트·예제 초기 구현</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">8194ec60</code> progress→utils 통합, pyproject.toml 통합</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">78aa0833</code> register_writer __init__ 노출 제외</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">4ac197ed</code> import atomicwriter 경로문제 해결</div>
             </div>
           </div>
         </details>
 
         <details class="nar">
-          <summary>A.2 플러그인 구조
-            <span class="who-strip"><i class="who-pip" style="--pc: var(--p1)"></i><i class="who-pip" style="--pc: var(--p2)"></i></span>
-          </summary>
-          <div class="nar-body">
-            <p><span class="by" style="--pc: var(--p1)">seojaeoh</span>가 초기 커밋에서 register_writer/get_writer 기반 플러그인 등록 체계를 만들었고, <span class="by" style="--pc: var(--p2)">박진석</span>가 <code class="sha">b12b951c</code>에서 pandas/numpy/polars 메서드 지원을 추가하며 WRITER_MAPPING 구조를 바꿨다.</p>
-            <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">b12b951c</code> pandas numpy polars 메서드 지원, WRITER_MAPPING 구조 변경</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">40ab705a</code> numpy 쓰기함수 및 다중 array(npz) 지원</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">78aa0833</code> register_writer 일부 제외</div>
-            </div>
-          </div>
-        </details>
-
-        <details class="nar">
-          <summary>B. 포맷 지원
+          <summary>포맷별 쓰기 지원
             <span class="who-strip"><i class="who-pip" style="--pc: var(--p2)"></i><i class="who-pip" style="--pc: var(--p1)"></i></span>
           </summary>
           <div class="nar-body">
-            <p>데이터프레임 계열(parquet/csv/excel/json)과 numpy 계열(npy/npz) 포맷 지원은 <span class="by" style="--pc: var(--p2)">박진석</span>가 <code class="sha">b12b951c</code>·<code class="sha">40ab705a</code>에서 주도적으로 만들었다. <span class="by" style="--pc: var(--p1)">seojaeoh</span>는 이후 xlsx/sql 포맷의 문제를 수정했다(<code class="sha">b09d8bb6</code>, <code class="sha">acbd47eb</code>).</p>
+            <p><span class="by" style="--pc: var(--p2)">jinseok</span>이 <code class="sha">40ab705a</code>에서 NumPy 쓰기(1차원/다차원 배열 분기)를 추가하고 <code class="sha">b12b951c</code>에서 pandas/numpy/polars 메서드 지원과 WRITER_MAPPING 구조 개편을 주도했다. SQL 계열은 <span class="by" style="--pc: var(--p1)">seojaeoh</span>가 <code class="sha">acbd47eb</code>(sql update)와 <code class="sha">b09d8bb6</code>(xlsx & sql fix)로 다듬었다.</p>
             <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">b12b951c</code> pandas/numpy/polars 메서드 지원 및 예제 추가</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">b09d8bb6</code> xlsx & sql fix</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">b12b951c</code> pandas/numpy/polars 메서드 지원, WRITER_MAPPING 구조 변경</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">40ab705a</code> numpy 쓰기함수 및 다중 array 지원</div>
               <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">acbd47eb</code> sql update</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">b09d8bb6</code> xlsx & sql fix</div>
             </div>
           </div>
         </details>
 
         <details class="nar">
-          <summary>C.1~C.2 스냅샷 쓰기/조회
+          <summary>진행률 표시 & 장애 시나리오 대응
+            <span class="who-strip"><i class="who-pip" style="--pc: var(--p2)"></i><i class="who-pip" style="--pc: var(--p3)"></i><i class="who-pip" style="--pc: var(--p1)"></i></span>
+          </summary>
+          <div class="nar-body">
+            <p><span class="by" style="--pc: var(--p2)">jinseok</span>이 <code class="sha">ae26078a</code>에서 ProgressBar 구현과 write 연동을 마쳤다. <span class="by" style="--pc: var(--p3)">choi</span>는 KeyboardInterrupt(<code class="sha">2c7bfbac</code>), OOM(<code class="sha">040d9475</code>, <code class="sha">79aa3b27</code>), CI/CD 실패(<code class="sha">4ac87a41</code>) 네 가지 장애 시나리오의 before/after 예제와 README를 만들어 라이브러리가 실패 상황에서 어떻게 동작하는지 실증했다. <span class="by" style="--pc: var(--p1)">seojaeoh</span>는 <code class="sha">4b598c47</code>에서 verbose 옵션과 단계별(setup/write_call/replace/success_flag) 소요 시간을 로깅하는 error_diagnosis 기능을 실제로 구현했다 — 메시지와 diff가 일치했다.</p>
+            <div class="evidence"><div class="ev-title">근거 커밋</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">ae26078a</code> progress 표시 구현 및 사용 예제 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p3)">choi</span> <code class="sha">2c7bfbac</code> KeyboardInterrupt 시나리오</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p3)">choi</span> <code class="sha">040d9475</code> 시나리오 2: OOM</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p3)">choi</span> <code class="sha">79aa3b27</code> 시나리오 4: OOM non-atomic</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p3)">choi</span> <code class="sha">4ac87a41</code> 시나리오 3: CI/CD 실패</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">4b598c47</code> error_diagnosis 함수 추가 (verbose 성능 진단 로그)</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="nar">
+          <summary>스냅샷 기본 기능 & 버전 조회/관리
             <span class="who-strip"><i class="who-pip" style="--pc: var(--p2)"></i></span>
           </summary>
           <div class="nar-body">
-            <p><span class="by" style="--pc: var(--p2)">박진석</span>가 write_snapshot 계열 전체를 전담했다. <code class="sha">2dc07f34</code>에서 overwrite/append 모드의 초기 스냅샷 기능을 구현한 뒤, <code class="sha">854d3725</code>에서 저장 포맷을 arrow로, <code class="sha">e2cf3f97</code>에서 다시 parquet + export_to_datalake로 바꿨고, <code class="sha">8f5e663a</code>에서 compression 옵션과 벤치마크 스크립트를 함께 추가했다. 조회 기능(read_table 버전 조회, list_snapshots, tag_version)도 <code class="sha">30526dd4</code>에서 같은 사람이 만들었다.</p>
+            <p><span class="by" style="--pc: var(--p2)">jinseok</span>이 스냅샷 계열을 사실상 전담했다. <code class="sha">2dc07f34</code>로 write_snapshot을 처음 구현한 뒤, <code class="sha">854d3725</code>(arrow 포맷), <code class="sha">e2cf3f97</code>(parquet 전환 + export_to_datalake), <code class="sha">8f5e663a</code>(compression 추가)로 저장 포맷을 세 차례 바꿨다. 조회/관리 쪽은 <code class="sha">30526dd4</code>에서 tag_version과 list_snapshots를, <code class="sha">3855ac2f</code>에서 스냅샷 삭제 함수를, <code class="sha">0607bf38</code>/<code class="sha">4f3897ab</code>에서 expire_snapshots 만료 기능을 추가했다.</p>
             <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">2dc07f34</code> snapshot 초기 기능 구현 및 예제 추가</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">854d3725</code> snapshot arrow 포맷으로 변경</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">e2cf3f97</code> write_snapshot parquet 전환, export_to_datalake 추가</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">8f5e663a</code> compression 추가, benchmark_parquet_speed 추가</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">30526dd4</code> tag_version, list_snapshots 함수 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">2dc07f34</code> snapshot 초기 기능 구현 및 예제 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">854d3725</code> snapshot arrow 포맷으로 변경</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">e2cf3f97</code> write_snapshot parquet 전환, export_to_datalake 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">8f5e663a</code> compression 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">30526dd4</code> tag_version, list_snapshots 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">3855ac2f</code> snapshot 삭제 함수 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">0607bf38</code> expire_snapshots 기능 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">4f3897ab</code> snapshotExpire 설명 수정</div>
             </div>
           </div>
         </details>
 
         <details class="nar">
-          <summary>C.3 스냅샷 삭제/롤백/되돌리기
-            <span class="who-strip"><i class="who-pip" style="--pc: var(--p2)"></i><i class="who-pip" style="--pc: var(--p1)"></i></span>
+          <summary>롤백 & 리버트
+            <span class="who-strip"><i class="who-pip" style="--pc: var(--p1)"></i><i class="who-pip" style="--pc: var(--p2)"></i></span>
           </summary>
           <div class="nar-body">
-            <p><span class="by" style="--pc: var(--p1)">seojaeoh</span>가 <code class="sha">465be765</code>에서 rollback 기능을 먼저 추가했고, <span class="by" style="--pc: var(--p2)">박진석</span>가 <code class="sha">3855ac2f</code>에서 삭제 함수(delete_version)를, <code class="sha">37667cc8</code>에서 revert 함수를 구현하며 스냅샷 관련 함수들의 동시성 문제를 함께 해결했다. expire_snapshots 기능도 <span class="by" style="--pc: var(--p2)">박진석</span>가 <code class="sha">0607bf38</code>에서 추가했다.</p>
-            <div class="callout"><b>메시지 &ne; 실제 diff</b> &mdash; <code class="sha">37667cc8</code>는 diff를 직접 확인한 결과 core.py 762줄 변경 규모의 대규모 리팩터링으로, 메시지의 "동시성 문제 해결" 표현대로 revert 구현과 락(lock) 처리가 함께 이루어졌다.</div>
+            <p><span class="by" style="--pc: var(--p1)">seojaeoh</span>가 <code class="sha">465be765</code>에서 rollback을 먼저 구현했고, 이어 <span class="by" style="--pc: var(--p2)">jinseok</span>이 <code class="sha">37667cc8</code>에서 revert 함수를 구현하면서 write_snapshot 전체를 FileLock으로 감싸 스냅샷 관련 함수들의 동시성(race condition) 문제를 함께 해결했다 — 메시지의 '동시성 문제 해결'이 실제로 FileLock 도입으로 확인됐다.</p>
             <div class="evidence"><div class="ev-title">근거 커밋</div>
               <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">465be765</code> add rollback</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">3855ac2f</code> snapshot 삭제 함수 추가</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">37667cc8</code> revert 함수 구현 및 동시성 문제 해결</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">0607bf38</code> expire_snapshots 기능 추가 예제 추가</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">4f3897ab</code> snapshotExpire 설명 수정</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">37667cc8</code> revert 함수 구현 및 스냅샷 함수 동시성 문제 해결(FileLock)</div>
             </div>
           </div>
         </details>
 
         <details class="nar">
-          <summary>C.4~C.5 모델 스냅샷 / CLI
+          <summary>모델 스냅샷
             <span class="who-strip"><i class="who-pip" style="--pc: var(--p2)"></i></span>
           </summary>
           <div class="nar-body">
-            <p><span class="by" style="--pc: var(--p2)">박진석</span>가 write_model_snapshot을 <code class="sha">5a0f50c1</code>에서 최초 구현하고, <code class="sha">61411651</code>에서 멀티쓰레딩, <code class="sha">06bc94d3</code>에서 멀티프로세싱으로 순차 개선했다(중간에 <code class="sha">e10c56bb</code>로 별도 스크립트 파일을 한 번 제거하고 core.py로 흡수). read_model_snapshot과 CLI 커맨드(list_snapshots/tag_version/revert/delete_version) 역시 같은 사람이 담당했다.</p>
+            <p><span class="by" style="--pc: var(--p2)">jinseok</span>이 대용량 모델 저장을 위한 모델 스냅샷 계열을 전담했다. <code class="sha">5a0f50c1</code>로 저장을 처음 구현하고, <code class="sha">06bc94d3</code>·<code class="sha">61411651</code>에서 멀티프로세싱/멀티쓰레딩 지원을 추가한 뒤 <code class="sha">e10c56bb</code>로 별도 write_model_snapshot.py 파일을 정리(제거)했다. 읽기 쪽은 <code class="sha">a9c94fad</code>·<code class="sha">f7f112ae</code>에서 read_model_snapshot과 관련 테스트를 추가/수정했다.</p>
             <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">5a0f50c1</code> write model snapshot 저장 구현</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">61411651</code> core.py 멀티쓰레딩 지원</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">06bc94d3</code> write_model_snapshot 멀티프로세싱 구현</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">a9c94fad</code>·<code class="sha">f7f112ae</code> read_model_snapshot 추가/수정</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">8a3cd8fd</code> CLI 명령어 추가, <code class="sha">8397f05e</code> CLI 재귀참조 문제 해결</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">5a0f50c1</code> write model snapshot 저장 구현</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">06bc94d3</code> write_model_snapshot 멀티프로세싱 구현</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">61411651</code> pyproject.toml 수정, core.py 멀티쓰레딩 지원</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">e10c56bb</code> write_model_snapshot.py 제거</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">a9c94fad</code> read_model_snapshot 및 테스트 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">f7f112ae</code> read_model_snapshot 및 테스트 수정</div>
             </div>
           </div>
         </details>
 
         <details class="nar">
-          <summary>D. 운영 기능 (진행률/에러진단/성능)
+          <summary>CLI 도구
+            <span class="who-strip"><i class="who-pip" style="--pc: var(--p2)"></i></span>
+          </summary>
+          <div class="nar-body">
+            <p><span class="by" style="--pc: var(--p2)">jinseok</span>이 <code class="sha">8a3cd8fd</code>에서 list-snapshots/tag-version/revert/delete-version CLI 명령어를 추가하고, <code class="sha">8397f05e</code>에서 CLI의 재귀참조 문제를 해결했다.</p>
+            <div class="evidence"><div class="ev-title">근거 커밋</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">8a3cd8fd</code> CLI 명령어 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">8397f05e</code> CLI 재귀참조 문제 해결</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="nar">
+          <summary>테스트
+            <span class="who-strip"><i class="who-pip" style="--pc: var(--p2)"></i></span>
+          </summary>
+          <div class="nar-body">
+            <p><span class="by" style="--pc: var(--p2)">jinseok</span>이 스냅샷 보조 함수 테스트(<code class="sha">2ebfd168</code>), test_snapshot 수정(<code class="sha">1bf28cc0</code>), import 이름 정리(<code class="sha">70d80a04</code>)를 맡았다. <code class="sha">0bb6800e</code>는 메시지가 '주석처리 및 버그 수정'인데, diff를 실제로 열어보니 test_diagnostic_logging.py 등 4개 테스트 파일 전체가 통째로 주석 처리되어 비활성화된 것이 확인됐다 — 버그 수정과 별개로 테스트 커버리지가 줄어드는 변경이다.</p>
+            <div class="callout"><b>메시지 &ne; 실제 diff</b> &mdash; <code class="sha">0bb6800e</code>의 메시지는 '주석처리 및 버그 수정'이지만 실제로는 diagnostic_logging/error_diagnosis 등 4개 테스트 파일 전체를 비활성화한 것이다.</div>
+            <div class="evidence"><div class="ev-title">근거 커밋</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">2ebfd168</code> snapshot 보조 함수 테스트 코드 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">1bf28cc0</code> test_snapshot 수정</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">70d80a04</code> tests 파일 import 이름 변경</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">0bb6800e</code> 4개 테스트 파일 주석처리(비활성화) + 버그 수정 — 메시지≠실제 규모</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="nar">
+          <summary>벤치마크
             <span class="who-strip"><i class="who-pip" style="--pc: var(--p2)"></i><i class="who-pip" style="--pc: var(--p1)"></i></span>
           </summary>
           <div class="nar-body">
-            <p><span class="by" style="--pc: var(--p2)">박진석</span>가 진행률 표시(<code class="sha">ae26078a</code>)와 utils 통합(<code class="sha">8194ec60</code>), 성능 벤치마크 스크립트(<code class="sha">579443bc</code>) 및 멀티쓰레딩(<code class="sha">61411651</code>)을 만들었다. <span class="by" style="--pc: var(--p1)">seojaeoh</span>는 <code class="sha">4b598c47</code>에서 write()에 verbose 모드와 단계별 타이밍 로깅(에러 진단)을 추가했다.</p>
-            <div class="callout"><b>메시지 &ne; 실제 diff</b> &mdash; <code class="sha">4b598c47</code>의 메시지는 "add error_diagnosis function" 한 줄이지만, diff를 직접 열어보면 write()에 verbose 플래그·setup/write_call/replace 단계별 타이밍 로깅을 추가하고 관련 테스트 7개(test_error_diagnosis.py 등)를 함께 만든 변경이다.</div>
+            <p><span class="by" style="--pc: var(--p2)">jinseok</span>이 <code class="sha">579443bc</code>에서 write 속도 벤치마크를 수정했고, <span class="by" style="--pc: var(--p1)">seojaeoh</span>가 <code class="sha">917c44e3</code>에서 벤치마크 결과 요약(benchmark_results_summary.md)을 정리했다.</p>
             <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">ae26078a</code> progress 표시 구현 및 사용 예제 추가</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">8194ec60</code> progress → utils 통합</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">4b598c47</code> add error_diagnosis function (verbose 타이밍 로깅)</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">579443bc</code> benchmark_write_speed.py 수정</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">61411651</code> core.py 멀티쓰레딩 지원</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">579443bc</code> benchmark_write_speed.py 수정</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">917c44e3</code> benchmark_results_summary.md 추가</div>
             </div>
           </div>
         </details>
 
         <details class="nar">
-          <summary>E. 테스트 시나리오 (회복력 검증)
-            <span class="who-strip"><i class="who-pip" style="--pc: var(--p3)"></i><i class="who-pip" style="--pc: var(--p1)"></i></span>
-          </summary>
-          <div class="nar-body">
-            <p><span class="by" style="--pc: var(--p3)">최장주</span>가 4개의 회복력 검증 시나리오(KeyboardInterrupt, OOM, CI/CD 실패, non-atomic 비교용 OOM)를 모두 설계·작성했다. <span class="by" style="--pc: var(--p1)">seojaeoh</span>는 이후 <code class="sha">0bb6800e</code>에서 이 시나리오들의 pytest 코드 4개를 수정했다.</p>
-            <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p3)">최장주</span> <code class="sha">2c7bfbac</code> feat: add KeyboardInterrupt scenario</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p3)">최장주</span> <code class="sha">040d9475</code> Add scenario 2: OOM</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p3)">최장주</span> <code class="sha">4ac87a41</code> Add scenario 3: CI/CD failure case</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p3)">최장주</span> <code class="sha">79aa3b27</code> 시나리오 4 (OOM non-atomic 비교)</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">0bb6800e</code> 수정이 필요한 pytest 코드 4개 주석처리 및 버그 수정</div>
-            </div>
-          </div>
-        </details>
-
-        <details class="nar">
-          <summary>F.1 README / Sphinx / apidoc
-            <span class="who-strip"><i class="who-pip" style="--pc: var(--p3)"></i><i class="who-pip" style="--pc: var(--p1)"></i><i class="who-pip" style="--pc: var(--p2)"></i></span>
-          </summary>
-          <div class="nar-body">
-            <p>README는 여러 사람이 시기별로 나눠 갱신했다: 초반은 <span class="by" style="--pc: var(--p1)">seojaeoh</span>(<code class="sha">b9957bc9</code>, <code class="sha">d4a93dc2</code>), 8월 중순 대규모 개편은 <span class="by" style="--pc: var(--p3)">최장주</span>(<code class="sha">f108bb3a</code>, <code class="sha">ce2744de</code>, <code class="sha">44ed2f5b</code>)가 맡았다. Sphinx 문서 빌드/배포 워크플로는 <span class="by" style="--pc: var(--p1)">seojaeoh</span>가 만들었고(<code class="sha">7b158894</code>, <code class="sha">423b50c7</code>), 이후 GPL→MIT 전환 과정에서 <span class="by" style="--pc: var(--p3)">최장주</span>가 <code class="sha">4111271a</code>에서 빌드 산출물을 갱신했다. API 문서(apidoc/)는 <span class="by" style="--pc: var(--p1)">seojaeoh</span>가 <code class="sha">cc8edfa3</code>, <code class="sha">c5357514</code>에서 생성했다.</p>
-            <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p3)">최장주</span> <code class="sha">f108bb3a</code> 수정된 README 반영 (381줄 규모)</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">7b158894</code> docs deploy (Sphinx Makefile/conf.py/index.rst 최초 추가)</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p3)">최장주</span> <code class="sha">4111271a</code> Docs: update documentation build and sources</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">cc8edfa3</code> api docs add, <code class="sha">c5357514</code> apidoc v2</div>
-            </div>
-          </div>
-        </details>
-
-        <details class="nar">
-          <summary>F.2 라이선스 정리 (GPL → MIT 전환)
-            <span class="who-strip"><i class="who-pip" style="--pc: var(--p3)"></i><i class="who-pip" style="--pc: var(--p2)"></i><i class="who-pip" style="--pc: var(--p1)"></i></span>
-          </summary>
-          <div class="nar-body">
-            <p><span class="by" style="--pc: var(--p2)">박진석</span>가 10월 14일 하루 동안 서드파티 라이브러리별 라이선스 파일과 헤더를 정리했다(<code class="sha">3b7a8a50</code>, <code class="sha">1558a41b</code>, <code class="sha">48411ea3</code>, <code class="sha">d8a17b76</code>). 이후 <span class="by" style="--pc: var(--p3)">최장주</span>가 10월 16~17일에 Sphinx 테마를 GPL 계열(sphinx_rtd_theme)에서 MIT 계열(alabaster)로 교체하며 GPL 자산을 제거했다.</p>
-            <div class="callout"><b>메시지 &ne; 실제 diff</b> &mdash; <code class="sha">7bac1a9c</code>("docs: final GPL license cleanup - complete MIT transition")는 이름만 보면 큰 마무리 작업 같지만, diff를 열어보면 실제 변경은 .gitignore 4줄 추가뿐이다. 실질적인 GPL 제거는 하루 전 커밋들(<code class="sha">20fd3c0a</code>, <code class="sha">f7493c3b</code>)에서 이미 끝나 있었다.</div>
-            <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">3b7a8a50</code> 사용 라이브러리 라이선스 명시 및 의존성 추가</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p3)">최장주</span> <code class="sha">20fd3c0a</code> Sphinx를 MIT 테마로 전환, GPL 자산 제거</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p3)">최장주</span> <code class="sha">f7493c3b</code> GPL license fix - alabaster로 교체</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p3)">최장주</span> <code class="sha">7bac1a9c</code> 이름은 "final cleanup"이나 실제로는 .gitignore 4줄</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">3bcfd600</code> Update LICENSE (661→201줄, Apache 2.0 전문 축소)</div>
-            </div>
-          </div>
-        </details>
-
-        <details class="nar">
-          <summary>F.3~F.4 배포/의존성/프로젝트 운영 문서
+          <summary>배포/의존성 관리
             <span class="who-strip"><i class="who-pip" style="--pc: var(--p2)"></i><i class="who-pip" style="--pc: var(--p1)"></i></span>
           </summary>
           <div class="nar-body">
-            <p>의존성 파일(pyproject.toml/requirements.txt) 관리는 <span class="by" style="--pc: var(--p2)">박진석</span>가 더 자주 손댔고(5건), <span class="by" style="--pc: var(--p1)">seojaeoh</span>가 소소한 fix를 담당했다(4건). 실제 배포 작업(PyPI deploy, Docker, GitHub Actions workflow)과 CODE_OF_CONDUCT/CONTRIBUTING 같은 프로젝트 운영 문서는 <span class="by" style="--pc: var(--p1)">seojaeoh</span>가 전담했다.</p>
+            <p>의존성 정비는 <span class="by" style="--pc: var(--p2)">jinseok</span>(<code class="sha">1b593676</code>, <code class="sha">8d639471</code>, <code class="sha">a609f190</code>, <code class="sha">bdb688c1</code>, <code class="sha">fd526622</code>)과 <span class="by" style="--pc: var(--p1)">seojaeoh</span>(<code class="sha">423b50c7</code>, <code class="sha">7060b92c</code>, <code class="sha">7066bec1</code>, <code class="sha">90368f4a</code>, <code class="sha">d5b98603</code>)가 나눠 반복적으로 진행했다. 실제 PyPI 배포(3.0.0/3.1.0, deploy lib)는 <span class="by" style="--pc: var(--p1)">seojaeoh</span>가 전담했고, Docker 지원(<code class="sha">40d9fe5b</code>)도 seojaeoh가 추가했다.</p>
             <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">8d639471</code>·<code class="sha">1b593676</code>·<code class="sha">bdb688c1</code> 의존성 정리</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">83de27a4</code> deploy lib, <code class="sha">d03d0f86</code>/<code class="sha">9337d04e</code> 3.0.0/3.1.0 deploy</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">83de27a4</code> deploy lib</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">9337d04e</code> 3.1.0 deploy</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">d03d0f86</code> 3.0.0 deploy</div>
               <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">40d9fe5b</code> docker add</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">0216dea4</code> add CODE_OF_CONDUCT, <code class="sha">cd5f7d58</code> fix contributing</div>
             </div>
           </div>
         </details>
 
         <details class="nar">
-          <summary>G. 발표/데모 준비
+          <summary>문서화 (README / Sphinx·API 문서 / 라이선스)
+            <span class="who-strip"><i class="who-pip" style="--pc: var(--p1)"></i><i class="who-pip" style="--pc: var(--p3)"></i><i class="who-pip" style="--pc: var(--p2)"></i></span>
+          </summary>
+          <div class="nar-body">
+            <p>README는 <span class="by" style="--pc: var(--p1)">seojaeoh</span>가 Initial commit부터 지속 갱신했고, <span class="by" style="--pc: var(--p3)">choi</span>가 내용 보완(<code class="sha">ce2744de</code>, <code class="sha">f108bb3a</code>)을 맡았다. Sphinx 문서/apidoc은 <span class="by" style="--pc: var(--p1)">seojaeoh</span>가 <code class="sha">cc8edfa3</code>(초기 생성)→<code class="sha">c5357514</code>(apidoc v2, README 대규모 개편 동반 확인)로 이어갔고, <span class="by" style="--pc: var(--p3)">choi</span>가 <code class="sha">4111271a</code>·<code class="sha">84bf707c</code>에서 Sphinx 빌드 산출물을 갱신했다. 라이선스는 <span class="by" style="--pc: var(--p3)">choi</span>가 GPL 자산을 제거하고 alabaster(MIT) 테마로 전환하는 흐름(<code class="sha">20fd3c0a</code> → <code class="sha">7bac1a9c</code> → <code class="sha">a188180e</code> → <code class="sha">f7493c3b</code>)을 주도했으며, 이전에는 <span class="by" style="--pc: var(--p2)">jinseok</span>이 개별 서드파티 라이선스 파일(<code class="sha">1558a41b</code>, <code class="sha">3b7a8a50</code>, <code class="sha">48411ea3</code>, <code class="sha">d8a17b76</code>)을 정리해두었다.</p>
+            <div class="evidence"><div class="ev-title">근거 커밋</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">b703d367</code> Initial commit (README 최초)</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">c5357514</code> apidoc v2, README 대규모 개편</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p1)">seojaeoh</span> <code class="sha">cc8edfa3</code> api docs add</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p3)">choi</span> <code class="sha">4111271a</code> Sphinx 문서 빌드/소스 갱신</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p3)">choi</span> <code class="sha">20fd3c0a</code> Sphinx MIT(alabaster) 테마 전환</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p3)">choi</span> <code class="sha">a188180e</code> GPL 파일 전체 제거</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p3)">choi</span> <code class="sha">7bac1a9c</code> GPL 정리 최종, MIT 전환 완료</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">3b7a8a50</code> 서드파티 라이선스 파일 명시</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="nar">
+          <summary>데모/시연 & 발표 준비
             <span class="who-strip"><i class="who-pip" style="--pc: var(--p2)"></i></span>
           </summary>
           <div class="nar-body">
-            <p><span class="by" style="--pc: var(--p2)">박진석</span>가 프로젝트 발표 직전 데모/발표 자료를 정리했다 — 구버전 데모 삭제(<code class="sha">afebbded</code>), 발표용 시연 코드 추가(<code class="sha">b88367cf</code>), 발표 준비 스크립트(<code class="sha">5511ef15</code>).</p>
+            <p><span class="by" style="--pc: var(--p2)">jinseok</span>이 데모/시연 코드를 전담했다. <code class="sha">b88367cf</code>에서 WriteTest.py, test_core_features.py, writeSnapshotTest.py 등 시연·테스트 코드를 대량 추가했고(diff 확인 결과 메시지대로 7개 파일 1,400줄 이상 추가), 이후 <code class="sha">21c53a41</code>·<code class="sha">72a5645a</code>로 데모를 다듬고 <code class="sha">afebbded</code>로 구버전 데모를 정리했다. <code class="sha">5511ef15</code>에서는 발표 준비용 스크립트(presentation.py, prepareModelPresentation.py)를 추가했다.</p>
             <div class="evidence"><div class="ev-title">근거 커밋</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">afebbded</code> 구버전 demo 삭제</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">b88367cf</code> 기능 시연 코드 추가 (WriteTest.py, test_core_features.py 등 신규 대형 파일 동반)</div>
-              <div class="ev-item"><span class="by" style="--pc: var(--p2)">박진석</span> <code class="sha">5511ef15</code> Presentation Prepare (prepareModelPresentation.py, presentation.py)</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">b88367cf</code> 기능 시연 코드 대량 추가 (WriteTest, test_core_features 등)</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">21c53a41</code> demo 수정</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">72a5645a</code> snapshot 데모 추가</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">afebbded</code> 구버전 demo 삭제</div>
+              <div class="ev-item"><span class="by" style="--pc: var(--p2)">jinseok</span> <code class="sha">5511ef15</code> Presentation Prepare</div>
             </div>
           </div>
         </details>
@@ -1375,9 +1364,9 @@
       <table class="plain">
         <thead><tr><th scope="col">사람</th><th scope="col">병합</th><th scope="col">내역</th></tr></thead>
         <tbody>
-          <tr><td style="color: var(--p1); font-weight: 600">seojaeoh</td><td>22건</td><td class="mono-cell">PR #1·#2·#3·#4·#5·#7·#8·#9·#10·#11·#12·#14·#15·#16·#17·#18·#21·#24·#32·#33 및 브랜치 병합 2건 — 대부분의 기능 브랜치를 main으로 통합</td></tr>
-          <tr><td style="color: var(--p3); font-weight: 600">최장주</td><td>6건</td><td class="mono-cell">PR #26·#27·#28·#29·#30·#31 — GPL→MIT 라이선스/문서 정리 브랜치 통합</td></tr>
-          <tr><td style="color: var(--p2); font-weight: 600">박진석</td><td>4건</td><td class="mono-cell">PR #22·#23·#25 및 브랜치 병합 1건 — 의존성 수정, 멀티쓰레딩, 라이선스 fix 브랜치 통합</td></tr>
+          <tr><td style="color: var(--p1); font-weight: 600">seojaeoh</td><td>22건</td><td class="mono-cell">PR #1~#33 대부분의 practice/feature 브랜치 병합</td></tr>
+          <tr><td style="color: var(--p3); font-weight: 600">최장주 (chjaju)</td><td>6건</td><td class="mono-cell">GPL/문서 정리 브랜치 병합 (docs/remove-gpl-license-issues 등)</td></tr>
+          <tr><td style="color: var(--p2); font-weight: 600">realstone3639 (Park jinseok)</td><td>4건</td><td class="mono-cell">multithreading/snapshotArrow 등 브랜치 병합</td></tr>
         </tbody>
       </table>
     </section>
@@ -1387,9 +1376,9 @@
       <table class="plain">
         <thead><tr><th scope="col">사람</th><th scope="col">Git 계정</th><th scope="col">근거</th></tr></thead>
         <tbody>
-          <tr><td style="color: var(--p1); font-weight: 600">seojaeoh<br><span style="font-weight:400;color:var(--ink-3);font-size:13px">50</span></td><td class="mono-cell">seojaeoh &lt;90062866+seojaeohcode@users.noreply.github.com&gt;<br>seojaeoh &lt;seojaeohcoder@gmail.com&gt;<br>LAB-S\seoco &lt;seojaeohcoder@gmail.com&gt;<br>SEOJAEOH\seoco &lt;seojaeohcoder@gmail.com&gt;</td><td>GitHub noreply 계정(90062866+seojaeohcode, 저장소 소유자 seojaeohcode와 일치)과 로컬 gmail 계정(seojaeohcoder@gmail.com, 로컬 로그인명 LAB-S\seoco/SEOJAEOH\seoco 포함)이 모두 <b>seojaeoh</b>라는 동일 이름을 공유. GitHub 계정 쪽은 PR merge가 대부분(26건 중 22건 merge)이고 gmail 계정 쪽은 실제 작업 커밋(문서/배포/설정)이 대부분이라 <b>동일인의 GitHub 웹 UI vs 로컬 환경 커밋</b>으로 판단. 사용자 확인 후 병합.</td></tr>
-          <tr><td style="color: var(--p2); font-weight: 600">박진석<br><span style="font-weight:400;color:var(--ink-3);font-size:13px">46</span></td><td class="mono-cell">Park jinseok &lt;realstone3639@gmail.com&gt;<br>realstone3639 &lt;realstone3639@gmail.com&gt;</td><td>이메일 완전 일치로 자동 병합 (강한 신호).</td></tr>
-          <tr><td style="color: var(--p3); font-weight: 600">최장주<br><span style="font-weight:400;color:var(--ink-3);font-size:13px">18</span></td><td class="mono-cell">최장주 &lt;jujangchoi@choejangjuui-MacBookPro.local&gt;<br>chjaju &lt;75622013+chjaju@users.noreply.github.com&gt;</td><td>GitHub 계정 'chjaju'는 6건 전부가 PR merge이며, 그 merge 대상 브랜치(docs/final-gpl-cleanup 등)는 모두 로컬 계정 '최장주'가 만든 브랜치. 로마자 발음 유사성(최장주→chjaju)과 merge-대상 브랜치 소유자 일치라는 두 신호가 겹쳐 <b>동일인</b>으로 판단. 사용자 확인 후 병합.</td></tr>
+          <tr><td style="color: var(--p2); font-weight: 600">realstone3639 (Park jinseok)<br><span style="font-weight:400;color:var(--ink-3);font-size:13px">46</span></td><td class="mono-cell">realstone3639 &lt;realstone3639@gmail.com&gt;<br>Park jinseok &lt;realstone3639@gmail.com&gt;</td><td>이메일 완전 일치로 <b>자동 병합</b> (survey_commits.py identity_groups).</td></tr>
+          <tr><td style="color: var(--p1); font-weight: 600">seojaeoh<br><span style="font-weight:400;color:var(--ink-3);font-size:13px">50</span></td><td class="mono-cell">seojaeoh &lt;90062866+seojaeohcode@users.noreply.github.com&gt;<br>seojaeoh &lt;seojaeohcoder@gmail.com&gt;<br>LAB-S\seoco &lt;seojaeohcoder@gmail.com&gt;<br>SEOJAEOH\seoco &lt;seojaeohcoder@gmail.com&gt;</td><td>GitHub noreply ID(seojaeohcode) 기준 자동 병합된 그룹과, 로컬 로그인 계정(LAB-S\seoco/SEOJAEOH\seoco, seojaeohcoder@gmail.com 이메일)으로 커밋한 그룹을 '이름에 seojaeoh가 겹침' 근거로 병합. 사용자에게 확인받아 확정.</td></tr>
+          <tr><td style="color: var(--p3); font-weight: 600">최장주 (chjaju)<br><span style="font-weight:400;color:var(--ink-3);font-size:13px">18</span></td><td class="mono-cell">최장주 &lt;jujangchoi@choejangjuui-MacBookPro.local&gt;<br>chjaju &lt;75622013+chjaju@users.noreply.github.com&gt;</td><td>이름·이메일이 서로 겹치지 않아 자동 병합 대상이 아니었으나, 동일 인물로 추정된다는 사용자 확인을 받아 병합.</td></tr>
         </tbody>
       </table>
       <p class="lede" style="font-size:14px">50 + 46 + 18 = 114 — 전체 커밋 수와 일치한다.</p>
@@ -1404,15 +1393,16 @@
         <div class="cov-cell"><span class="cov-num" style="color: var(--p1)">10</span><span class="cov-lab">diff를 직접 읽음<br><span style="color:var(--ink-3)">커버리지 3 · 신뢰도 10</span></span></div>
         <div class="cov-cell"><span class="cov-num" style="color: var(--p2)">69</span><span class="cov-lab">메시지 + 파일 경로만으로 분류</span></div>
         <div class="cov-cell"><span class="cov-num" style="color: var(--p3)">3</span><span class="cov-lab">사전 필터 스킵</span></div>
-        <div class="cov-cell"><span class="cov-num" style="color: var(--flag)">2</span><span class="cov-lab">커밋 메시지 &ne; 실제 diff</span></div>
+        <div class="cov-cell"><span class="cov-num" style="color: var(--flag)">1</span><span class="cov-lab">커밋 메시지 &ne; 실제 diff</span></div>
       </div>
 
       <ul class="notes">
         <li>114 = 32(병합) + 3(사전 필터) + 69(메시지만) + 10(diff 읽음) — 검산 일치.</li>
-        <li>레포 구조는 <b>계층형</b>(코어 엔진 → 포맷 플러그인 → 스냅샷/버전관리 → 운영기능이 쌓이는 라이브러리)으로 판단했고, 여기에 문서/라이선스/배포와 테스트 시나리오, 발표 준비를 병렬 대분류로 추가했다.</li>
-        <li>신원 병합 2건(seojaeoh의 GitHub/로컬 계정 통합, 최장주/chjaju 통합)은 이름 유사성과 정황 증거만으로는 100% 확정할 수 없어 사용자에게 근거를 제시하고 확인받은 뒤 반영했다.</li>
-        <li>diff_read 10건은 message_reliability_flag가 true였던 커밋 전부다. 나머지 69건(message_only)은 커밋 메시지와 git show --stat의 변경 파일 목록만으로 소분류에 매핑했으며, 실제 코드 라인 단위 diff는 열지 않았다.</li>
-        <li>AI 사용 여부는 판별하지 않았다. 이 레포 커밋 메시지에는 Co-Authored-By 트레일러가 없었다.</li>
+        <li>레포 구조는 <b>계층형</b>으로 판단했다 — 원자적 쓰기 코어(A) 위에 스냅샷/버전관리(B)가 쌓이고, 그 위를 테스트·배포·문서 등 운영(C)이 감싸는 구조.</li>
+        <li>신원 병합: 이메일 완전 일치(jinseok 그룹)는 자동 병합, 이름 겹침(seojaeoh 계열)은 근거를 제시해 병합, 이름·이메일이 전혀 겹치지 않는 최장주/chjaju는 사용자에게 직접 확인받아 병합했다(2026-07-26 사용자 확인).</li>
+        <li>prefilter로 분류된 3개 커밋(a188180e, c7bfb517, 84bf707c)은 Sphinx 빌드 산출물(수십~수백 개 정적 파일) 위주라 diff를 열지 않고 커밋 메시지+파일 경로만으로 문서화 카테고리에 배정했다.</li>
+        <li>diff를 직접 연 10개 커밋 중 3개(c5357514, cc8edfa3, 4111271a/84bf707c 포함 apidoc·Sphinx 계열)는 커버리지 사유상 파일 목록만으로도 문서 산출물임이 명확해 diff 원문 대신 stat 수준까지만 확인했다 — 코드 로직 변경이 아닌 문서 산출물이라는 성격상 이 정도로 충분하다고 판단했다.</li>
+        <li>AI 사용 여부는 판별하지 않았다. 커밋 메시지에 AI 관련 트레일러는 발견되지 않았고, git author 필드만을 귀속 기준으로 삼았다.</li>
       </ul>
     </section>
 
