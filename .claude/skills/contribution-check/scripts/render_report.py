@@ -28,7 +28,12 @@ import sys
 LEAD, PART, FIX = "주도", "참여", "수정"
 ROLES = (LEAD, PART, FIX)
 DOT = {LEAD: "●", PART: "◐", FIX: "○"}
-MAX_PEOPLE = 10
+
+# 템플릿에 정의된 사람 색(--p1 ~ --pN)의 개수. 넘어가면 앞에서부터 다시 쓴다 —
+# 색은 보조 단서일 뿐 이름이 항상 글자로 함께 나오므로 정보가 사라지지는 않는다.
+PALETTE = 15
+# 이 인원을 넘으면 차트 선이 서로를 가려 읽기 어려워진다. 막지는 않고 알리기만 한다.
+CROWDED = 10
 
 
 # ----------------------------------------------------------------- 검증
@@ -37,8 +42,13 @@ class Invalid(Exception):
 
 
 def validate(a):
-    """리포트가 조용히 틀리게 나오는 대신 여기서 죽게 한다."""
-    errs = []
+    """리포트가 조용히 틀리게 나오는 대신 여기서 죽게 한다.
+
+    막는 것은 '결과가 틀리게 나오는' 조건뿐이다. '보기 나빠지는' 조건은
+    경고만 하고 통과시킨다 — 어떤 팀 규모든 일단 결과는 나와야 한다.
+    (errors, warnings) 를 돌려준다.
+    """
+    errs, warns = [], []
 
     def need(cond, msg):
         if not cond:
@@ -49,9 +59,14 @@ def validate(a):
     need(repo.get("branch"), "repo.branch 가 없다")
     need(repo.get("levels") in (2, 3), "repo.levels 는 2 또는 3 이어야 한다")
     need(people, "people 이 비어 있다")
-    need(len(people) <= MAX_PEOPLE,
-         "사람이 %d명이다 — 이 리포트 형식은 %d명까지를 상정한다. "
-         "팀을 나눠 여러 번 돌릴지 사용자에게 물어라." % (len(people), MAX_PEOPLE))
+    if len(people) > PALETTE:
+        warns.append("사람이 %d명이라 색이 %d개를 넘는다 — %d번째부터 앞의 색을 다시 쓴다. "
+                     "이름은 항상 색 옆에 글자로 나오므로 정보가 사라지진 않지만, 색만으로 "
+                     "사람을 구분할 수는 없다." % (len(people), PALETTE, PALETTE + 1))
+    if len(people) > CROWDED:
+        warns.append("사람이 %d명이면 누적 커밋 추이 차트의 선 %d개가 서로를 가려 읽기 어렵다. "
+                     "표와 커버리지는 인원수와 무관하게 유지되지만, 차트만 보고 판단하지는 "
+                     "말라고 결과물에 적어두거나 팀을 나눠 돌리는 편이 낫다." % (len(people), len(people)))
 
     slugs = [p["slug"] for p in people]
     need(len(set(slugs)) == len(slugs), "people.slug 가 중복된다")
@@ -104,7 +119,7 @@ def validate(a):
 
     if errs:
         raise Invalid("\n".join("  - " + e for e in errs))
-    return nleaf
+    return warns
 
 
 # ----------------------------------------------------------------- 집계
@@ -114,7 +129,7 @@ class Agg(object):
         self.people = a["people"]
         self.var = {}
         for i, p in enumerate(sorted(self.people, key=lambda x: -x.get("commits", 0))):
-            self.var[p["slug"]] = "--p%d" % (i + 1)
+            self.var[p["slug"]] = "--p%d" % (i % PALETTE + 1)  # 팔레트를 넘으면 순환
         self.name = {p["slug"]: p["name"] for p in self.people}
         self.order = [p["slug"] for p in
                       sorted(self.people, key=lambda x: -x.get("commits", 0))]
@@ -166,26 +181,12 @@ def build_chart(agg):
     step = next((s for s in (1, 2, 5, 10, 20, 25, 50, 100) if s >= step), step)
     ymax = int(math.ceil(peak / float(step))) * step
 
-    def px(d):
-        return PADL + d / float(dmax) * (CW - PADL - PADR)
-
     def py(v):
         return (CH - PADB) - v / float(ymax) * (CH - PADT - PADB)
 
-    o = ['<svg class="chart" viewBox="0 0 %d %d" role="img" aria-label="사람별 누적 커밋 추이">' % (CW, CH)]
-    for v in range(0, ymax + 1, step):
-        o.append('<line class="grid" x1="%d" y1="%.1f" x2="%.1f" y2="%.1f"/>'
-                 % (PADL, py(v), CW - PADR, py(v)))
-        o.append('<text class="ax" x="%d" y="%.1f" text-anchor="end">%d</text>' % (PADL - 9, py(v) + 4, v))
-
-    # 날짜 라벨은 최대 5개만 — 더 넣으면 겹친다
-    nlab = min(5, len(tl))
-    picks = sorted({int(round(i * (len(tl) - 1) / float(nlab - 1))) for i in range(nlab)}) if nlab > 1 else [0]
-    for i in picks:
-        o.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">%s</text>'
-                 % (px(offs[i]), CH - 12, tl[i]["date"][5:]))
-
-    # 끝점 라벨이 겹치지 않도록 아래에서 위로 최소 간격을 확보한다
+    # 선 끝의 이름 라벨이 겹치지 않도록 아래에서 위로 최소 간격을 확보한다.
+    # 그래도 차트 위로 넘치면(인원이 많거나 최종값이 몰려 있는 경우) 선 옆 라벨을
+    # 포기하고 차트 아래 범례로 돌린다 — 카드 제목을 덮는 것보다 낫다.
     ends = sorted(((tl[-1]["counts"][s], s) for s in agg.order), key=lambda x: x[0])
     label_y, prev = {}, None
     for v, s in ends:
@@ -194,6 +195,24 @@ def build_chart(agg):
             y = prev - 13
         label_y[s] = y
         prev = y
+    inline_labels = min(label_y.values()) >= PADT
+    padr = PADR if inline_labels else 16  # 범례로 돌리면 라벨 자리를 그래프에 돌려준다
+
+    def px(d):
+        return PADL + d / float(dmax) * (CW - PADL - padr)
+
+    o = ['<svg class="chart" viewBox="0 0 %d %d" role="img" aria-label="사람별 누적 커밋 추이">' % (CW, CH)]
+    for v in range(0, ymax + 1, step):
+        o.append('<line class="grid" x1="%d" y1="%.1f" x2="%.1f" y2="%.1f"/>'
+                 % (PADL, py(v), CW - padr, py(v)))
+        o.append('<text class="ax" x="%d" y="%.1f" text-anchor="end">%d</text>' % (PADL - 9, py(v) + 4, v))
+
+    # 날짜 라벨은 최대 5개만 — 더 넣으면 겹친다
+    nlab = min(5, len(tl))
+    picks = sorted({int(round(i * (len(tl) - 1) / float(nlab - 1))) for i in range(nlab)}) if nlab > 1 else [0]
+    for i in picks:
+        o.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">%s</text>'
+                 % (px(offs[i]), CH - 12, tl[i]["date"][5:]))
 
     for slug in agg.order:
         vals = [(offs[i], tl[i]["counts"][slug]) for i in range(len(tl))]
@@ -205,11 +224,20 @@ def build_chart(agg):
             if v != prev_v:  # 값이 바뀐 날에만 점 — 전부 찍으면 선이 안 보인다
                 o.append('<circle class="pt" cx="%.1f" cy="%.1f" r="2.5"/>' % (px(d), py(v)))
             prev_v = v
-        o.append('<text class="lbl" x="%.1f" y="%.1f">%s %d</text>'
-                 % (CW - PADR + 10, label_y[slug], html.escape(agg.name[slug]), vals[-1][1]))
+        if inline_labels:
+            o.append('<text class="lbl" x="%.1f" y="%.1f">%s %d</text>'
+                     % (CW - padr + 10, label_y[slug], html.escape(agg.name[slug]), vals[-1][1]))
         o.append("</g>")
     o.append("</svg>")
-    return "\n          ".join(o)
+
+    svg = "\n          ".join(o)
+    if inline_labels:
+        return svg
+    legend = "".join(
+        '<span class="clg-item" data-person="%s" style="--pc: var(%s)">'
+        '<i class="clg-chip"></i>%s <b>%d</b></span>'
+        % (s, agg.var[s], html.escape(agg.name[s]), tl[-1]["counts"][s]) for s in agg.order)
+    return svg + '\n          <div class="chart-legend">%s</div>' % legend
 
 
 # ----------------------------------------------------------------- 조각
@@ -670,10 +698,12 @@ def main():
         a = json.load(f)
 
     try:
-        validate(a)
+        warns = validate(a)
     except Invalid as e:
         sys.stderr.write("analysis.json 검증 실패:\n%s\n" % e)
         return 1
+    for w in warns:
+        sys.stderr.write("경고: %s\n" % w)
 
     tpl = args.template or os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "..", "references", "report-template.html")

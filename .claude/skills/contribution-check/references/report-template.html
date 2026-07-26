@@ -39,6 +39,11 @@
     --p8: #65a30d; --p8-soft: #ecfccb;  /* lime-600 */
     --p9: #c026d3; --p9-soft: #fae8ff;  /* fuchsia-600 */
     --p10: #0d9488; --p10-soft: #ccfbf1; /* teal-600 */
+    --p11: #4f46e5; --p11-soft: #e0e7ff; /* indigo-600 */
+    --p12: #0284c7; --p12-soft: #e0f2fe; /* sky-600 */
+    --p13: #16a34a; --p13-soft: #dcfce7; /* green-600 */
+    --p14: #9333ea; --p14-soft: #f3e8ff; /* purple-600 */
+    --p15: #ca8a04; --p15-soft: #fef9c3; /* yellow-600 */
 
     --flag: #dc2626;      /* red-600 — semantic, kept separate from the accent hues above */
     --flag-soft: #fee2e2; /* red-100 */
@@ -80,6 +85,11 @@
       --p8: #a3e635; --p8-soft: #1a2e05;  /* lime-400 */
       --p9: #e879f9; --p9-soft: #4a044e;  /* fuchsia-400 */
       --p10: #2dd4bf; --p10-soft: #042f2e; /* teal-400 */
+      --p11: #818cf8; --p11-soft: #1e1b4b; /* indigo-400 */
+      --p12: #38bdf8; --p12-soft: #082f49; /* sky-400 */
+      --p13: #4ade80; --p13-soft: #052e16; /* green-400 */
+      --p14: #c084fc; --p14-soft: #3b0764; /* purple-400 */
+      --p15: #facc15; --p15-soft: #422006; /* yellow-400 */
 
       --flag: #f87171;      /* red-400 */
       --flag-soft: #450a0a; /* red-950 */
@@ -102,6 +112,11 @@
     --p8: #a3e635; --p8-soft: #1a2e05;
     --p9: #e879f9; --p9-soft: #4a044e;
     --p10: #2dd4bf; --p10-soft: #042f2e;
+    --p11: #818cf8; --p11-soft: #1e1b4b;
+    --p12: #38bdf8; --p12-soft: #082f49;
+    --p13: #4ade80; --p13-soft: #052e16;
+    --p14: #c084fc; --p14-soft: #3b0764;
+    --p15: #facc15; --p15-soft: #422006;
     --flag: #f87171; --flag-soft: #450a0a;
     --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
@@ -121,6 +136,11 @@
     --p8: #65a30d; --p8-soft: #ecfccb;
     --p9: #c026d3; --p9-soft: #fae8ff;
     --p10: #0d9488; --p10-soft: #ccfbf1;
+    --p11: #4f46e5; --p11-soft: #e0e7ff;
+    --p12: #0284c7; --p12-soft: #e0f2fe;
+    --p13: #16a34a; --p13-soft: #dcfce7;
+    --p14: #9333ea; --p14-soft: #f3e8ff;
+    --p15: #ca8a04; --p15-soft: #fef9c3;
     --flag: #dc2626; --flag-soft: #fee2e2;
     --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.08);
     --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.08), 0 2px 4px -2px rgb(15 23 42 / 0.08);
@@ -128,10 +148,11 @@
 
 
   /* ---------------------------------------------------------------------
-     사람 색: --p1 ~ --p10. 커밋 수 내림차순으로 배정한다.
-     11명 이상이면 이 형식의 상정 범위를 넘는다 — 색으로 구분하려 하지 말고
-     사용자에게 팀을 나눠 여러 번 돌릴지 물어본다.
-     --flag(red)는 "메시지 ≠ 실제 diff" 전용이므로 사람 색으로 쓰지 않는다.
+     사람 색: --p15 까지 있다. 커밋 수 내림차순으로 배정한다.
+     15명을 넘으면 렌더러가 색을 앞에서부터 다시 쓰고 경고를 낸다 — 색이 겹칠 뿐
+     이름은 항상 색 옆에 글자로 함께 나오므로 정보가 사라지지는 않는다. 다만 그
+     정도 인원이면 차트 선이 서로를 가려 읽기 어려워지니 팀을 나누는 편이 낫다.
+     --flag(red 계열)는 "메시지 != 실제 diff" 전용이므로 사람 색으로 쓰지 않는다.
      --------------------------------------------------------------------- */
 
   * { box-sizing: border-box; }
@@ -691,6 +712,19 @@
   .chart .pt { fill: var(--surface); stroke: var(--pc); stroke-width: 2; }
   .chart .lbl { fill: var(--pc); font-size: 12px; font-weight: 700; font-family: var(--sans); }
 
+  /* 인원이 많아 선 옆 라벨이 차트 위로 넘칠 때 렌더러가 이 범례로 돌린다 */
+  .chart-legend {
+    display: flex; flex-wrap: wrap; gap: 4px 14px;
+    margin-top: 10px; font-size: 12.5px; color: var(--ink-2);
+  }
+  .clg-item { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .clg-item b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .clg-chip {
+    width: 10px; height: 10px; border-radius: var(--radius-full);
+    background: var(--pc); flex: none;
+  }
+  body.filtering .clg-item:not(.on) { opacity: .3; }
+
   .mrow { display: grid; grid-template-columns: 96px 1fr auto; align-items: center; gap: 10px; font-size: 13px; }
   .mrow-nm { color: var(--ink-2); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mrow-track { height: 9px; border-radius: var(--radius-full); background: var(--surface-2); overflow: hidden; }
@@ -1024,7 +1058,7 @@
     var cards = Array.prototype.slice.call(document.querySelectorAll('.person-card'));
     var rows = Array.prototype.slice.call(document.querySelectorAll('tr.leaf-row'));
     var series = Array.prototype.slice.call(document.querySelectorAll('.series'));
-    var mrows = Array.prototype.slice.call(document.querySelectorAll('.mrow'));
+    var mrows = Array.prototype.slice.call(document.querySelectorAll('.mrow, .clg-item'));
     var clearBtn = document.getElementById('clearFilter');
     var status = document.getElementById('filterStatus');
     var active = null;
