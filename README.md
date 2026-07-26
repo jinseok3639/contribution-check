@@ -71,6 +71,8 @@ git -C ~/.claude/skills/contribution-check pull
 | `{repo}-{branch}_result.md` | 같은 내용의 Markdown |
 | `{repo}-{branch}_analysis.json` | 판단 원본. 고쳐서 렌더러만 다시 돌릴 수 있다 |
 
+실제로 어떻게 나오는지: **[예시 리포트 보기](https://htmlpreview.github.io/?https://github.com/jinseok3639/contribution-check/blob/samples/atio-main_result.html)**
+
 HTML 탭 구성:
 
 1. **대시보드** — 팀원 카드, 누적 커밋 추이 차트(가로축은 실제 날짜 간격), 사람별 소분류 커버리지, 주도/참여/수정 역할 구성
