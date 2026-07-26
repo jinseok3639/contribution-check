@@ -494,7 +494,7 @@ def render_html(agg, style, script):
     <div class="kpi-strip">
       <div class="kpi"><span class="kpi-num">%(nleaf)d</span><span class="kpi-lab">소분류 — 기여 판단의 최소 단위</span></div>
       <div class="kpi"><span class="kpi-num">%(multi)d</span><span class="kpi-lab">2인 이상이 손댄 소분류</span></div>
-      <div class="kpi"><span class="kpi-num" style="color: var(--flag)">%(nmis)d</span><span class="kpi-lab">커밋 메시지 &ne; 실제 diff</span></div>
+      <div class="kpi"><span class="kpi-num" style="color: var(--flag)">%(nmis)d<span style="font-size:15px;color:var(--ink-3)">/%(read)d</span></span><span class="kpi-lab">커밋 메시지 &ne; 실제 diff<br><span style="color:var(--ink-3)">diff를 직접 읽은 커밋 중</span></span></div>
       <div class="kpi"><span class="kpi-num">%(read)d<span style="font-size:15px;color:var(--ink-3)">/%(nonmerge)d</span></span><span class="kpi-lab">diff를 직접 읽은 커밋 (병합 제외)</span></div>
     </div>
 
@@ -685,7 +685,7 @@ def render_md(agg):
     w("- diff를 직접 읽음: **%d건**%s" % (cov["diff_read"], rr))
     w("- 검산: %d = %d + %d + %d + %d ✓"
       % (cov["total"], cov["merge"], cov["prefilter"], cov["message_only"], cov["diff_read"]))
-    w("- 메시지 ≠ 실제 diff로 확인된 커밋: **%d건**" % len(agg.mismatch))
+    w("- 메시지 ≠ 실제 diff로 확인된 커밋: **%d / %d건** (diff를 직접 읽은 커밋 중)" % (len(agg.mismatch), cov["diff_read"]))
     w("- 2인 이상이 손댄 소분류: **%d / %d개**" % (agg.multi, agg.nleaf))
     if a.get("notes"):
         w("\n### 판단의 한계\n")
