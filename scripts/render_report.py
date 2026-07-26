@@ -365,12 +365,15 @@ def narratives(agg):
     return "\n\n        ".join(o)
 
 
-def plain_table(headers, rows, aligns=None):
+def plain_table(headers, rows):
+    """rows: 각 행은 이미 완성된 '<td>...</td>' 문자열들의 튜플/리스트 — 여기서 또
+    <td>로 감싸면 중첩 <td>가 되어 브라우저가 암묵적으로 셀을 잘라 열이 두 배로
+    갈라진다 (실제로 겪은 표 정렬 붕괴 버그)."""
     o = ['<table class="plain">',
          "  <thead><tr>%s</tr></thead>" % "".join('<th scope="col">%s</th>' % h for h in headers),
          "  <tbody>"]
     for r in rows:
-        o.append("    <tr>%s</tr>" % "".join("<td%s>%s</td>" % (a, c) for a, c in zip(aligns or [""] * len(r), r)))
+        o.append("    <tr>%s</tr>" % "".join(r))
     o += ["  </tbody>", "</table>"]
     return "\n      ".join(o)
 
@@ -426,9 +429,15 @@ def render_html(agg, style, script):
              ("구조", "%s <span style=\"font-size:13px;color:var(--ink-3)\">(%d단계)</span>"
               % (repo.get("structure", ""), repo["levels"]))]
 
-    return u"""<title>%(name)s 기여도 분석 — %(title)s (%(branch)s)</title>
-
+    return u"""<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>%(name)s 기여도 분석 — %(title)s (%(branch)s)</title>
 %(style)s
+</head>
+<body>
 
 <div class="wrap">
 
@@ -559,6 +568,8 @@ def render_html(agg, style, script):
 </div>
 
 %(script)s
+</body>
+</html>
 """ % {
         "name": html.escape(repo["name"]), "title": html.escape(repo.get("title", "")),
         "branch": html.escape(repo["branch"]), "style": style, "script": script,
