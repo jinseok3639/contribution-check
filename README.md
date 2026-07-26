@@ -63,7 +63,7 @@ git -C ~/.claude/skills/contribution-check pull
 
 ## 결과물
 
-호출한 세션의 작업 디렉터리에 세 파일이 나온다 (분석 대상 레포 안에는 쓰지 않는다).
+분석 대상 레포 루트의 `contribution-check-result/` 폴더에 세 파일이 나온다 (출력 경로를 직접 지정했으면 그곳에).
 
 | 파일 | 내용 |
 | --- | --- |
