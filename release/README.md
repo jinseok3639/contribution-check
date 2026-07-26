@@ -2,7 +2,7 @@
 
 로컬 git 레포의 커밋 히스토리를 읽고, **팀원별로 무엇을 만들고 무엇을 고쳤는지**를 기능 단위 서술형 리포트로 정리하는 Claude Code 스킬.
 
-커밋 수, 라인 수, "A 30% / B 70%" 같은 퍼센트는 내지 않는다. 대신 대/중/소분류 기능 트리를 세우고 각 기능에 누가 어떻게 관여했는지를 문장으로 쓰되, **모든 판단에 근거 커밋 SHA를 붙인다.** 팀원이 직접 열어보고 반박할 수 있게 하는 것이 목적이다.
+GitHub Insights나 라인 수 기반 기여도 도구는 두 가지 문제가 있다. 포맷팅·보일러플레이트·리네이밍만으로도 라인 수는 쉽게 부풀릴 수 있고(게이밍하기 쉽다), 버그를 잡은 한 줄과 자동 생성된 코드 500줄이 라인 수로는 구분되지 않는다(가치를 반영 못 한다). 이 스킬은 커밋 수·라인 수·퍼센트 대신 대/중/소분류 기능 트리를 세우고 각 기능에 누가 어떻게 관여했는지를 문장으로 쓰되, **모든 판단에 근거 커밋 SHA를 붙인다.** 팀원이 직접 열어보고 반박할 수 있게 하는 것이 목적이다.
 
 ## 설치
 
@@ -18,7 +18,7 @@ git clone https://github.com/jinseok3639/contribution_check.git ~/.claude/skills
 git clone https://github.com/jinseok3639/contribution_check.git .claude/skills/contribution-check
 ```
 
-zip으로 받았다면 압축을 풀고 폴더 이름을 `contribution-check`로 바꿔서 위 경로에 넣는다. 어느 쪽이든 설치 후 Claude Code를 다시 켜야 스킬이 잡힌다.
+zip으로 받았다면 압축을 풀고 폴더 이름을 `contribution-check`로 바꿔서 위 경로에 넣는다. 설치 후 Claude Code를 다시 켜야 스킬이 잡힌다.
 
 업데이트:
 
@@ -78,10 +78,10 @@ HTML 탭 구성:
 3. **기능별 서술** — 중분류 단위 서술
 4. **분석 근거** — 신원 병합 근거, diff 커버리지, 분석의 한계
 
-서술을 한 줄 고치고 싶으면 `analysis.json`을 편집하고 렌더러만 다시 돌리면 된다. 레포를 처음부터 다시 읽지 않는다.
+서술을 한 줄 고치고 싶으면 `analysis.json`을 편집하고 렌더러만 다시 돌리면 된다 — 레포를 처음부터 다시 읽지 않는다.
 
 ```
-python ~/.claude/skills/contribution-check/scripts/render_report.py myrepo-main_analysis.json
+python scripts/render_report.py myrepo-main_analysis.json
 ```
 
 ## 요구사항
@@ -92,10 +92,10 @@ python ~/.claude/skills/contribution-check/scripts/render_report.py myrepo-main_
 
 ## 알아둘 것
 
-- **인원 제한은 없다.** 다만 10명을 넘으면 차트 선이 서로를 가리고, 15명을 넘으면 사람 색이 앞에서부터 다시 쓰인다. 둘 다 리포트에 그 한계가 적힌 채로 나온다.
-- **diff를 전수 확인하지는 않는다.** 기능 커버리지와 커밋 메시지 신뢰도를 기준으로 골라 읽고, "N개 중 M개를 어떤 기준으로 읽었다"를 리포트에 남긴다.
-- **AI 사용 여부는 판별하지 않는다.** `Co-Authored-By` 트레일러는 꺼두는 경우가 흔해 신뢰할 수 없다. git author 자체를 귀속 기준으로 삼는다.
-- **git author ≠ 실제 작업자**일 수 있다 (squash merge, 대표 1인이 대신 push, 페어 프로그래밍). 그래서 판단마다 SHA를 붙인다. 자동 판정을 믿으라는 도구가 아니라 확인할 거리를 만들어주는 도구다.
+- **인원 제한은 없지만 기여자가 너무 많을 경우 한계.** 다만 10명을 넘으면 차트 선이 서로를 가리고, 15명을 넘으면 사람 색이 앞에서부터 다시 쓰인다. 둘 다 리포트에 그 한계가 적힌 채로 나온다.
+- **diff를 전수 확인하지는 않음.** 기능 커버리지와 커밋 메시지 신뢰도를 기준으로 골라 읽고, "N개 중 M개를 어떤 기준으로 읽었다"를 리포트에 남긴다.
+- **AI 사용 여부는 판별하지 않음.** `Co-Authored-By` 트레일러는 꺼두는 경우가 흔하고 AI 코딩 도구가 사람 이름처럼 보이는 트레일러를 남기기도 해서 신뢰할 수 없다. git author 자체를 귀속 기준으로 삼는다.
+- **git author ≠ 실제 작업자**일 수 있음 (squash merge, 대표 1인이 대신 push, 페어 프로그래밍). 그래서 판단마다 SHA를 붙인다 — 자동 판정을 믿으라는 도구가 아니라 확인할 거리를 만들어주는 도구다.
 
 ## 구성
 
@@ -107,10 +107,6 @@ references/report-template.html   리포트 스타일·스크립트 원본
 references/analysis-example.json  analysis.json 스키마 예시
 ```
 
-## 개발
-
-이 브랜치(`master`)는 배포용이라 스킬 파일만 있다. 개발은 [`dev`](https://github.com/jinseok3639/contribution_check/tree/dev) 브랜치에서 한다.
-
 ## 라이선스
 
-MIT — [LICENSE](LICENSE) 참고.
+[MIT LICENSE](LICENSE)
