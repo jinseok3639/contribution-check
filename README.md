@@ -2,6 +2,20 @@
 
 > GitHub 레포의 커밋/브랜치/PR을 분석해서, 팀원별로 **"무엇을 만들고 무엇을 고쳤는지"** 를 서술형으로 정리해주는 도구.
 
+## 브랜치
+
+- **`dev`** (이 브랜치) — 개발용. 스킬 원본은 `.claude/skills/contribution-check/`에 있고, 그 경로 그대로 이 레포 세션에서 바로 실행되므로 고치면서 곧장 시험할 수 있다. 설계 노트(`note/`)와 시험 분석 결과(`sample_result/`), 시험 대상 레포(`sample_repo/`)는 gitignore로 로컬에만 둔다.
+- **`master`** — 배포용. 스킬 파일만 루트에 펼쳐둬서 받는 사람이 `~/.claude/skills/contribution-check`로 바로 clone할 수 있다. 설치·사용법 README도 이쪽 전용이다.
+
+두 브랜치는 파일 경로가 달라 merge로 잇지 않는다 (merge하면 `.claude/` 경로가 master로 딸려 들어간다). 배포는 항상:
+
+```
+python scripts/release.py --dry-run   # 뭐가 바뀌는지 먼저 본다
+python scripts/release.py --push
+```
+
+스킬 폴더 내용물과 `release/`(배포 전용 README·gitignore)를 합쳐 master 트리를 통째로 다시 만든다. master를 별도 worktree로 꺼내 쓰므로 지금 작업본은 건드리지 않는다.
+
 ## 왜 만드는가
 
 기존 기여도 분석 도구(GitHub Insights, RepoSense, naver/pr-stats 등)는 대부분 커밋 수, 추가/삭제 라인 수 같은 정량 지표에 머무릅니다. 이런 지표는 두 가지 문제가 있습니다.
