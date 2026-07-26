@@ -1,0 +1,1067 @@
+<title>{{REPO}} 기여도 분석 — {{PROJECT}} ({{BRANCH}})</title>
+
+<!--
+  contribution-check 결과물 뼈대.
+
+  쓰는 법: 이 파일을 복사해서 {{...}} 자리를 채우고, 반복 구조는 아래
+  "예시" 블록을 패턴 삼아 늘린다. style/script 블록은 레포와 무관하므로
+  그대로 둔다 (사람 수에 따라 --p1~--p10만 골라 쓰면 된다).
+
+  지켜야 할 것 — SKILL.md 6-5 "군더더기 금지":
+    · 섹션마다 도입부 설명 문단을 쓰지 않는다. 필요하면 h2 옆 .h2-note
+      한 줄로 압축한다.
+    · 차트에 "이 선은 …" 류 주석/보조선을 넣지 않는다.
+    · 도구 자기소개나 면책 푸터를 넣지 않는다.
+    · 기호 범례(.legend-key), 커버리지 수치, 신원 병합 근거는 남긴다 — 내용이다.
+-->
+
+<style>
+  :root {
+    /* Tailwind CSS default palette (slate neutrals + blue/orange/violet/red accents) —
+       referenced directly since it's the most widely deployed design system, so this
+       report reads as a familiar "modern web app" rather than a bespoke one-off. */
+    --paper: #f1f5f9;      /* slate-100 */
+    --surface: #ffffff;
+    --surface-2: #f8fafc;  /* slate-50 */
+    --ink: #0f172a;        /* slate-900 */
+    --ink-2: #475569;      /* slate-600 */
+    --ink-3: #64748b;      /* slate-500 */
+    --rule: #e2e8f0;       /* slate-200 */
+    --rule-strong: #cbd5e1;/* slate-300 */
+
+    --p1: #2563eb; --p1-soft: #dbeafe;  /* blue-600 */
+    --p2: #ea580c; --p2-soft: #ffedd5;  /* orange-600 */
+    --p3: #7c3aed; --p3-soft: #ede9fe;  /* violet-600 */
+    --p4: #059669; --p4-soft: #d1fae5;  /* emerald-600 */
+    --p5: #db2777; --p5-soft: #fce7f3;  /* pink-600 */
+    --p6: #d97706; --p6-soft: #fef3c7;  /* amber-600 */
+    --p7: #0891b2; --p7-soft: #cffafe;  /* cyan-600 */
+    --p8: #65a30d; --p8-soft: #ecfccb;  /* lime-600 */
+    --p9: #c026d3; --p9-soft: #fae8ff;  /* fuchsia-600 */
+    --p10: #0d9488; --p10-soft: #ccfbf1; /* teal-600 */
+
+    --flag: #dc2626;      /* red-600 — semantic, kept separate from the accent hues above */
+    --flag-soft: #fee2e2; /* red-100 */
+
+    --radius-sm: 6px;   /* rounded-md */
+    --radius-md: 8px;   /* rounded-lg */
+    --radius-lg: 12px;  /* rounded-xl */
+    --radius-full: 9999px;
+    --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.08);
+    --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.08), 0 2px 4px -2px rgb(15 23 42 / 0.08);
+
+    --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, "Liberation Mono", monospace;
+    --sans: ui-sans-serif, system-ui, "Malgun Gothic", "Apple SD Gothic Neo",
+            "Segoe UI", "Noto Sans KR", sans-serif;
+    --serif: var(--sans); /* Tailwind ships one sans family and builds hierarchy with
+                              weight/size, not a display/body pairing — matched here */
+
+    --measure: 68ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #020617;      /* slate-950 */
+      --surface: #0f172a;    /* slate-900 */
+      --surface-2: #1e293b;  /* slate-800 */
+      --ink: #f1f5f9;        /* slate-100 */
+      --ink-2: #94a3b8;      /* slate-400 */
+      --ink-3: #64748b;      /* slate-500 */
+      --rule: #334155;       /* slate-700 */
+      --rule-strong: #475569;/* slate-600 */
+
+      --p1: #60a5fa; --p1-soft: #172554;  /* blue-400 */
+      --p2: #fb923c; --p2-soft: #431407;  /* orange-400 */
+      --p3: #a78bfa; --p3-soft: #2e1065;  /* violet-400 */
+      --p4: #34d399; --p4-soft: #022c22;  /* emerald-400 */
+      --p5: #f472b6; --p5-soft: #500724;  /* pink-400 */
+      --p6: #fbbf24; --p6-soft: #451a03;  /* amber-400 */
+      --p7: #22d3ee; --p7-soft: #083344;  /* cyan-400 */
+      --p8: #a3e635; --p8-soft: #1a2e05;  /* lime-400 */
+      --p9: #e879f9; --p9-soft: #4a044e;  /* fuchsia-400 */
+      --p10: #2dd4bf; --p10-soft: #042f2e; /* teal-400 */
+
+      --flag: #f87171;      /* red-400 */
+      --flag-soft: #450a0a; /* red-950 */
+      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #020617; --surface: #0f172a; --surface-2: #1e293b;
+    --ink: #f1f5f9; --ink-2: #94a3b8; --ink-3: #64748b;
+    --rule: #334155; --rule-strong: #475569;
+    --p1: #60a5fa; --p1-soft: #172554;
+    --p2: #fb923c; --p2-soft: #431407;
+    --p3: #a78bfa; --p3-soft: #2e1065;
+    --p4: #34d399; --p4-soft: #022c22;
+    --p5: #f472b6; --p5-soft: #500724;
+    --p6: #fbbf24; --p6-soft: #451a03;
+    --p7: #22d3ee; --p7-soft: #083344;
+    --p8: #a3e635; --p8-soft: #1a2e05;
+    --p9: #e879f9; --p9-soft: #4a044e;
+    --p10: #2dd4bf; --p10-soft: #042f2e;
+    --flag: #f87171; --flag-soft: #450a0a;
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  }
+
+  :root[data-theme="light"] {
+    --paper: #f1f5f9; --surface: #ffffff; --surface-2: #f8fafc;
+    --ink: #0f172a; --ink-2: #475569; --ink-3: #64748b;
+    --rule: #e2e8f0; --rule-strong: #cbd5e1;
+    --p1: #2563eb; --p1-soft: #dbeafe;
+    --p2: #ea580c; --p2-soft: #ffedd5;
+    --p3: #7c3aed; --p3-soft: #ede9fe;
+    --p4: #059669; --p4-soft: #d1fae5;
+    --p5: #db2777; --p5-soft: #fce7f3;
+    --p6: #d97706; --p6-soft: #fef3c7;
+    --p7: #0891b2; --p7-soft: #cffafe;
+    --p8: #65a30d; --p8-soft: #ecfccb;
+    --p9: #c026d3; --p9-soft: #fae8ff;
+    --p10: #0d9488; --p10-soft: #ccfbf1;
+    --flag: #dc2626; --flag-soft: #fee2e2;
+    --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.08);
+    --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.08), 0 2px 4px -2px rgb(15 23 42 / 0.08);
+  }
+
+
+  /* ---------------------------------------------------------------------
+     사람 색: --p1 ~ --p10. 커밋 수 내림차순으로 배정한다.
+     11명 이상이면 이 형식의 상정 범위를 넘는다 — 색으로 구분하려 하지 말고
+     사용자에게 팀을 나눠 여러 번 돌릴지 물어본다.
+     --flag(red)는 "메시지 ≠ 실제 diff" 전용이므로 사람 색으로 쓰지 않는다.
+     --------------------------------------------------------------------- */
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    padding: 56px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: clamp(28px, 4vw, 36px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    max-width: var(--measure);
+    color: var(--ink-2);
+    margin: 0;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .fact {
+    flex: 1 1 150px;
+    padding: 15px 20px;
+    border-right: 1px solid var(--rule);
+    text-align: center;
+  }
+  .fact:last-child { border-right: 0; }
+
+  .fact dt {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 3px;
+  }
+
+  .fact dd {
+    margin: 0;
+    font-size: 17px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- section furniture ---------- */
+
+  section { display: flex; flex-direction: column; gap: 20px; }
+
+  h2 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+    letter-spacing: -0.01em;
+  }
+
+  h2 .h2-note {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-3);
+    margin-left: 10px;
+    letter-spacing: 0;
+  }
+
+  .lede { max-width: var(--measure); color: var(--ink-2); margin: 0; }
+
+  /* ---------- people legend / filter ---------- */
+
+  .people {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .person-card {
+    appearance: none;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--pc);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 0.12s, background 0.12s, box-shadow 0.12s, transform 0.12s;
+  }
+
+  .person-card:hover { border-color: var(--rule-strong); border-left-color: var(--pc); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .person-card:focus-visible { outline: 2px solid var(--pc); outline-offset: 2px; }
+  .person-card[aria-pressed="true"] { background: var(--pc-soft); border-color: var(--pc); }
+
+  .person-name {
+    font-weight: 650;
+    color: var(--pc);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .person-count {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+    font-weight: 400;
+  }
+
+  .person-blurb { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
+
+  .filter-hint {
+    font-size: 13px;
+    color: var(--ink-3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .clear-btn {
+    appearance: none;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--ink-2);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-full);
+    padding: 3px 10px;
+  }
+  .clear-btn:hover { color: var(--ink); border-color: var(--ink-3); }
+  .clear-btn:focus-visible { outline: 2px solid var(--ink-3); outline-offset: 2px; }
+  .clear-btn[hidden] { display: none; }
+
+  /* ---------- the ledger ---------- */
+
+  .ledger-scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); background: var(--surface); }
+
+  table.ledger {
+    width: 100%;
+    min-width: 660px;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+
+  table.ledger thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--rule-strong);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--ink-2);
+    text-align: left;
+    padding: 9px 14px;
+    white-space: nowrap;
+  }
+
+  /* --- the spine: 대분류 / 중분류 merged cells --- */
+
+  td.spine {
+    vertical-align: top;
+    padding: 11px 14px;
+    background: var(--surface-2);
+    border-right: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+    font-family: var(--sans);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  td.spine-major {
+    font-size: 16px;
+    width: 150px;
+    min-width: 150px;
+  }
+
+  td.spine-mid {
+    font-size: 14.5px;
+    width: 190px;
+    min-width: 190px;
+    background: color-mix(in srgb, var(--surface-2) 55%, var(--surface));
+  }
+
+  td.spine .idx {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    margin-bottom: 3px;
+  }
+
+  td.spine .leafcount {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-3);
+    margin-top: 5px;
+  }
+
+  /* --- leaf (소분류) + contribution cells --- */
+
+  tr.leaf-row td.leaf,
+  tr.leaf-row td.contrib {
+    border-bottom: 1px solid var(--rule);
+    padding: 10px 14px;
+    vertical-align: top;
+    transition: opacity 0.12s;
+  }
+
+  tr.leaf-row:last-child td { border-bottom: 0; }
+
+  td.leaf { line-height: 1.45; min-width: 210px; }
+
+  td.leaf .anchor {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink-3);
+    margin-top: 2px;
+  }
+
+  td.contrib { min-width: 300px; }
+
+  .contrib-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: 1.5px 0;
+  }
+
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    background: var(--mc-soft);
+    color: var(--mc);
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .mark.lead { border-color: var(--mc); }
+  .mark .dot { font-size: 9px; line-height: 1; }
+
+  .conf {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--ink-3);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-full);
+    padding: 1px 7px;
+    white-space: nowrap;
+  }
+  .conf.read { color: var(--ink-2); border-color: var(--rule-strong); }
+
+  .flag {
+    display: inline-block;
+    margin-left: 7px;
+    padding: 1px 7px;
+    border-radius: var(--radius-full);
+    background: var(--flag-soft);
+    color: var(--flag);
+    font-size: 10.5px;
+    font-weight: 700;
+    font-family: var(--mono);
+    letter-spacing: 0.04em;
+    cursor: help;
+    vertical-align: 1px;
+  }
+
+  .overlap-tag {
+    display: inline-block;
+    margin-left: 7px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--ink-3);
+    border: 1px dashed var(--rule-strong);
+    border-radius: var(--radius-full);
+    padding: 0 6px;
+    vertical-align: 1px;
+  }
+
+  /* Dimming when a person filter is active.
+     rowspan cells can't be half-dimmed, so the spine (대/중분류) always stays
+     at full strength — it is context, not a match target. Only the leaf and
+     contribution cells respond to the filter. */
+  body.filtering tr.leaf-row:not(.hit) td.leaf,
+  body.filtering tr.leaf-row:not(.hit) td.contrib { opacity: 0.22; }
+  body.filtering tr.leaf-row.hit td.leaf { font-weight: 600; }
+
+  .legend-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    align-items: center;
+  }
+  .legend-key b { font-weight: 600; color: var(--ink); }
+
+  /* ---------- narrative ---------- */
+
+  .narratives { display: flex; flex-direction: column; gap: 4px; }
+
+  details.nar {
+    border-bottom: 1px solid var(--rule);
+    background: transparent;
+  }
+  details.nar:first-of-type { border-top: 1px solid var(--rule); }
+
+  details.nar > summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 15px 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 16px;
+  }
+  details.nar > summary::-webkit-details-marker { display: none; }
+  details.nar > summary::before {
+    content: "+";
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--ink-3);
+    width: 14px;
+    flex: none;
+  }
+  details.nar[open] > summary::before { content: "\2212"; }
+  details.nar > summary:focus-visible { outline: 2px solid var(--ink-3); outline-offset: -2px; }
+  details.nar > summary:hover { color: var(--ink); }
+
+  details.nar summary .who-strip {
+    margin-left: auto;
+    display: flex;
+    gap: 5px;
+    flex: none;
+  }
+  .who-pip {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--pc);
+    display: inline-block;
+  }
+
+  .nar-body {
+    padding: 0 4px 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: var(--measure);
+  }
+  .nar-body p { margin: 0; }
+  .nar-body p .by { font-weight: 650; color: var(--pc); }
+
+  .evidence {
+    border-left: 2px solid var(--rule-strong);
+    padding: 2px 0 2px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ev-title {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .ev-item { font-size: 13.5px; color: var(--ink-2); line-height: 1.55; }
+  .sha {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-sm);
+    padding: 0 5px;
+    color: var(--ink);
+  }
+
+  .callout {
+    background: var(--flag-soft);
+    border-left: 3px solid var(--flag);
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .callout b { color: var(--flag); }
+
+  /* ---------- coverage ---------- */
+
+  .cov-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .cov-cell {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .cov-num { font-size: 26px; font-variant-numeric: tabular-nums; font-family: var(--sans); font-weight: 800; }
+  .cov-lab { font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
+
+  .cov-bar {
+    display: flex;
+    height: 10px;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    border: 1px solid var(--rule);
+  }
+  .cov-seg { height: 100%; }
+
+  table.plain {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table.plain th, table.plain td {
+    text-align: left;
+    padding: 10px 14px 10px 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  table.plain th {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  table.plain td.mono-cell { font-family: var(--mono); font-size: 12px; color: var(--ink-2); line-height: 1.7; }
+
+  ul.notes { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 9px; max-width: var(--measure); color: var(--ink-2); font-size: 14.5px; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 18px;
+    font-size: 12.5px;
+    color: var(--ink-3);
+    max-width: var(--measure);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 0 16px 64px; gap: 44px; }
+    .fact { border-right: 0; flex-basis: 45%; }
+  }
+
+  /* ---- dashboard / tabs ---- */
+  .tabs {
+    display: flex; gap: 4px; border-bottom: 1px solid var(--rule);
+    margin-bottom: -16px; overflow-x: auto; scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    appearance: none; background: none; border: 0; border-bottom: 2px solid transparent;
+    font: inherit; font-size: 14.5px; font-weight: 600; color: var(--ink-3);
+    padding: 10px 14px; cursor: pointer; white-space: nowrap; transition: color .12s, border-color .12s;
+  }
+  .tab-btn:hover { color: var(--ink-2); }
+  .tab-btn[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .tab-btn:focus-visible { outline: 2px solid var(--ink-3); outline-offset: -2px; border-radius: var(--radius-sm); }
+  .panel { display: flex; flex-direction: column; gap: 32px; }
+  .panel[hidden] { display: none; }
+
+  .card {
+    border: 1px solid var(--rule); border-radius: var(--radius-lg);
+    background: var(--surface); box-shadow: var(--shadow-sm); padding: 18px 20px 20px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .card-h {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+  }
+  .card-h span { font-size: 12.5px; font-weight: 400; color: var(--ink-3); }
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .chart { width: 100%; height: auto; overflow: visible; }
+  .chart .grid { stroke: var(--rule); stroke-width: 1; }
+  .chart .ax { fill: var(--ink-3); font-size: 11px; font-family: var(--sans); }
+  .chart .ln { fill: none; stroke: var(--pc); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+  .chart .pt { fill: var(--surface); stroke: var(--pc); stroke-width: 2; }
+  .chart .lbl { fill: var(--pc); font-size: 12px; font-weight: 700; font-family: var(--sans); }
+
+  .mrow { display: grid; grid-template-columns: 96px 1fr auto; align-items: center; gap: 10px; font-size: 13px; }
+  .mrow-nm { color: var(--ink-2); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mrow-track { height: 9px; border-radius: var(--radius-full); background: var(--surface-2); overflow: hidden; }
+  .mrow-fill { display: block; height: 100%; background: var(--pc); border-radius: var(--radius-full); }
+  .mrow-val { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--ink); min-width: 44px; text-align: right; }
+  .mrow-den { color: var(--ink-3); font-weight: 400; }
+  .mrow-group { display: flex; flex-direction: column; gap: 11px; }
+  .mrow-stack { display: flex; height: 18px; border-radius: var(--radius-sm); overflow: hidden; background: var(--surface-2); }
+  .seg {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10.5px; font-weight: 700; min-width: 0;
+  }
+  .seg.s-lead { background: var(--pc); color: #fff; }
+  .seg.s-part { background: color-mix(in srgb, var(--pc) 55%, var(--surface)); color: #fff; }
+  .seg.s-fix  { background: color-mix(in srgb, var(--pc) 20%, var(--surface)); color: var(--ink-2); }
+  .swatch {
+    display: inline-block; width: 9px; height: 9px; border-radius: 2px;
+    background: var(--ink-3); vertical-align: -1px; margin-right: 3px;
+  }
+  .swatch.w2 { opacity: .55; } .swatch.w3 { opacity: .25; }
+
+  .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .kpi {
+    border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--surface);
+    box-shadow: var(--shadow-sm); padding: 14px 16px; display: flex; flex-direction: column; gap: 3px;
+  }
+  .kpi-num { font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--ink); line-height: 1.1; }
+  .kpi-lab { font-size: 12.5px; color: var(--ink-2); line-height: 1.35; }
+
+  .person-stats { display: flex; gap: 12px; font-size: 12.5px; color: var(--ink-3); flex-wrap: wrap; }
+  .person-stats b { color: var(--ink); font-variant-numeric: tabular-nums; font-size: 13.5px; }
+  .person-name .alias { font-weight: 400; color: var(--ink-3); font-size: 13px; }
+
+  body.filtering .series:not(.on) { opacity: .16; }
+  body.filtering .mrow:not(.on) { opacity: .3; }
+
+  @media (max-width: 760px) {
+    .duo { grid-template-columns: 1fr; }
+    .kpi-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Contribution Check · 기능 단위 기여 분석</div>
+    <h1>{{REPO}} — {{한 줄로 이 레포가 뭔지}}</h1>
+    <dl class="facts">
+      <div class="fact"><dt>Repository</dt><dd>{{경로}}</dd></div>
+      <div class="fact"><dt>Branch</dt><dd>{{브랜치}}</dd></div>
+      <div class="fact"><dt>Commits</dt><dd>{{N}} <span style="font-size:13px;color:var(--ink-3)">(병합 {{P}})</span></dd></div>
+      <div class="fact"><dt>Period</dt><dd>{{첫 커밋}} → {{마지막}}</dd></div>
+      <div class="fact"><dt>구조</dt><dd>{{병렬형|계층형}} <span style="font-size:13px;color:var(--ink-3)">({{2|3}}단계)</span></dd></div>
+    </dl>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="보기 전환">
+    <button class="tab-btn" role="tab" type="button" data-tab="dash"   aria-selected="true">대시보드</button>
+    <button class="tab-btn" role="tab" type="button" data-tab="matrix" aria-selected="false">기능 분류 × 기여</button>
+    <button class="tab-btn" role="tab" type="button" data-tab="narr"   aria-selected="false">기능별 서술</button>
+    <button class="tab-btn" role="tab" type="button" data-tab="basis"  aria-selected="false">분석 근거</button>
+  </nav>
+
+  <!-- ==================================================== 1. 대시보드 -->
+  <div class="panel" id="p-dash" role="tabpanel">
+
+    <section>
+      <h2>팀원 <span class="h2-note">클릭하면 그 사람 기여만 강조됩니다 (모든 탭에 적용)</span></h2>
+      <div class="people">
+
+        <!-- 사람마다 하나. data-person은 모든 탭에서 필터 키로 쓰이므로
+             영문 소문자 슬러그로 고정하고 표/차트와 반드시 같은 값을 쓴다. -->
+        <button class="person-card" type="button" aria-pressed="false" data-person="{{slug}}"
+                style="--pc: var(--p1); --pc-soft: var(--p1-soft)">
+          <span class="person-name">{{이름}} <span class="alias">({{다른 author 이름}})</span></span>
+          <span class="person-stats">
+            <span><b>{{커밋수}}</b> 커밋</span><span><b>{{관여}}</b>/{{전체소분류}} 기능</span><span><b>{{주도}}</b> 주도</span>
+          </span>
+          <span class="person-blurb">{{이 사람이 뭘 한 사람인지 한 줄. 기능 이름 위주로.}}</span>
+        </button>
+
+      </div>
+      <div class="filter-hint">
+        <button class="clear-btn" type="button" id="clearFilter" hidden>필터 해제</button>
+        <span id="filterStatus"></span>
+      </div>
+    </section>
+
+    <div class="card">
+      <div class="card-h">누적 커밋 추이</div>
+      <div>
+        <!--
+          가로축 = 실제 날짜 간격(등간격 아님), 세로축 = 사람별 누적 커밋.
+          좌표 계산 (viewBox 900×300, 좌42 우104 상14 하34 여백):
+            DMAX = 첫 커밋~마지막 커밋 사이 일수
+            YMAX = 최다 커밋자의 총 커밋 수를 6의 배수로 올림
+            x(d) = 42 + d/DMAX * 754        (d = 첫 커밋일로부터 며칠째)
+            y(v) = 266 - v/YMAX * 252
+          가로 눈금선은 0..YMAX를 6등분 근처로, 날짜 라벨은 4~6개만 (겹치면 뺀다).
+          선 끝의 text.lbl에 이름+총계를 적어서 범례를 대신한다.
+          data-person이 있으면 사람 필터에 자동으로 반응한다.
+        -->
+        <svg class="chart" viewBox="0 0 900 300" role="img" aria-label="사람별 누적 커밋 추이">
+          <line class="grid" x1="42" y1="266" x2="796" y2="266"/>
+          <text class="ax" x="33" y="270" text-anchor="end">0</text>
+          <!-- … 눈금선 반복 … -->
+          <text class="ax" x="42" y="288" text-anchor="middle">{{MM-DD}}</text>
+          <g class="series" data-person="{{slug}}" style="--pc: var(--p1)">
+            <polyline class="ln" points="{{x,y x,y …}}"/>
+            <circle class="pt" cx="{{x}}" cy="{{y}}" r="3"/>
+            <text class="lbl" x="806" y="{{y+4}}">{{이름}} {{총계}}</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="duo">
+      <div class="card">
+        <div class="card-h">기능 커버리지 <span>소분류 {{전체}}개 중 관여</span></div>
+        <div class="mrow-group">
+          <!-- 퍼센트로 쓰지 않는다. width만 비율이고 표시는 개수. -->
+          <div class="mrow" data-person="{{slug}}" style="--pc: var(--p1)">
+            <span class="mrow-nm">{{이름}}</span>
+            <span class="mrow-track"><span class="mrow-fill" style="width: {{관여/전체*100}}%"></span></span>
+            <span class="mrow-val">{{관여}}<span class="mrow-den">/{{전체}}</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-h">역할 구성 <span><i class="swatch"></i>주도 <i class="swatch w2"></i>참여 <i class="swatch w3"></i>수정</span></div>
+        <div class="mrow-group">
+          <!-- flex 값이 곧 개수. 0인 역할은 그 span 자체를 넣지 않는다. -->
+          <div class="mrow" data-person="{{slug}}" style="--pc: var(--p1)">
+            <span class="mrow-nm">{{이름}}</span>
+            <span class="mrow-stack">
+              <span class="seg s-lead" style="flex: {{n}}" title="주도 {{n}}">{{n}}</span>
+              <span class="seg s-part" style="flex: {{n}}" title="참여 {{n}}">{{n}}</span>
+              <span class="seg s-fix"  style="flex: {{n}}" title="수정 {{n}}">{{n}}</span>
+            </span>
+            <span class="mrow-val">{{합}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-strip">
+      <div class="kpi"><span class="kpi-num">{{n}}</span><span class="kpi-lab">소분류 — 기여 판단의 최소 단위</span></div>
+      <div class="kpi"><span class="kpi-num">{{n}}</span><span class="kpi-lab">2인 이상이 손댄 소분류</span></div>
+      <div class="kpi"><span class="kpi-num" style="color: var(--flag)">{{n}}</span><span class="kpi-lab">커밋 메시지 ≠ 실제 diff</span></div>
+      <div class="kpi"><span class="kpi-num">{{n}}<span style="font-size:15px;color:var(--ink-3)">/{{n}}</span></span><span class="kpi-lab">diff를 직접 읽은 커밋 (병합 제외)</span></div>
+    </div>
+
+  </div>
+
+  <!-- ============================================ 2. 기능 분류 × 기여 -->
+  <div class="panel" id="p-matrix" role="tabpanel" hidden>
+    <section>
+      <h2>기능 분류 × 기여 <span class="h2-note">중분류 {{n}} · 소분류 {{n}}</span></h2>
+
+      <div class="legend-key">
+        <span><span class="mark lead" style="--mc: var(--ink-2); --mc-soft: var(--surface-2)"><span class="dot">●</span> 주도</span> &nbsp;처음 만든 사람</span>
+        <span><span class="mark" style="--mc: var(--ink-2); --mc-soft: var(--surface-2)"><span class="dot">◐</span> 참여</span> &nbsp;함께 구성</span>
+        <span><span class="mark" style="--mc: var(--ink-2); --mc-soft: var(--surface-2)"><span class="dot">○</span> 수정</span> &nbsp;이후 고침·조정</span>
+        <span><span class="flag">≠</span> &nbsp;메시지와 실제 diff가 다름</span>
+        <span><span class="conf read">diff 확인</span> / <span class="conf">메시지 추정</span> &nbsp;귀속 근거</span>
+      </div>
+
+      <!--
+        행 = 소분류 하나. 사람은 절대 열로 만들지 않는다 (인원수만큼 표가 넓어지고
+        대부분 소분류는 관여자가 1명이라 빈칸투성이가 된다).
+
+        rowspan = 그 중분류 아래 소분류 개수. 중분류의 첫 소분류 행에만 spine 셀을
+        넣고 나머지 행은 td.leaf부터 시작한다.
+        계층형(3단계)이면 td.spine.spine-major (rowspan = 그 대분류의 소분류 총합)를
+        한 열 더 앞에 둔다.
+
+        조립 후 검산: 모든 spine의 rowspan 합 == tr.leaf-row 개수.
+      -->
+      <div class="ledger-scroll">
+        <table class="ledger">
+          <thead>
+            <tr>
+              <th scope="col">중분류 — 기능 영역</th>
+              <th scope="col">소분류 — 개별 기능</th>
+              <th scope="col">기여</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr class="leaf-row" data-people="{{slug}} {{slug2}}">
+              <td class="spine spine-mid" rowspan="{{k}}"><span class="idx">{{00}}</span>{{중분류 이름}}<span class="leafcount">소분류 {{k}}</span></td>
+              <td class="leaf">{{소분류 이름}}<span class="anchor">{{함수/클래스/파일 이름}}</span></td>
+              <td class="contrib">
+                <!-- 관여자 1명 = .contrib-line 1개. SHA는 근거이므로 반드시 넣는다. -->
+                <div class="contrib-line"><span class="mark lead" style="--mc: var(--p1); --mc-soft: var(--p1-soft)"><span class="dot">●</span>주도</span><b style="color: var(--p1)">{{이름}}</b><code class="sha">{{sha}}</code><span class="conf read">diff 확인</span></div>
+                <div class="contrib-line"><span class="mark" style="--mc: var(--p2); --mc-soft: var(--p2-soft)"><span class="dot">○</span>수정</span><b style="color: var(--p2)">{{이름}}</b><code class="sha">{{sha}}</code><span class="flag" title="{{sha}} — 메시지는 '{{X}}'지만 실제로는 {{Y}}">≠</span><span class="conf">메시지 추정</span></div>
+              </td>
+            </tr>
+
+            <!-- 같은 중분류의 두 번째 소분류부터는 spine 셀 없이 -->
+            <tr class="leaf-row" data-people="{{slug}}">
+              <td class="leaf">{{소분류 이름}}</td>
+              <td class="contrib">
+                <div class="contrib-line">…</div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================================================ 3. 기능별 서술 -->
+  <div class="panel" id="p-narr" role="tabpanel" hidden>
+    <section>
+      <h2>기능별 서술</h2>
+      <div class="narratives">
+
+        <!-- 헤더는 중분류 단위로만. 소분류마다 details를 새로 만들지 않는다.
+             첫 항목만 open. who-pip은 이 영역에 관여한 사람 색 순서대로. -->
+        <details class="nar" open>
+          <summary>{{중분류 이름}}
+            <span class="who-strip"><i class="who-pip" style="--pc: var(--p1)"></i><i class="who-pip" style="--pc: var(--p2)"></i></span>
+          </summary>
+          <div class="nar-body">
+            <p><span class="by" style="--pc: var(--p1)">{{이름}}</span>{{이 영역에서 무엇을 어떤 순서로 만들었는지. 소분류들을 문단 안에서 SHA 인용으로 잇는다.}}</p>
+
+            <!-- 메시지와 실제 diff가 다른 커밋이 있을 때만. 없으면 통째로 뺀다. -->
+            <div class="callout">
+              <b>메시지 ≠ 실제 diff</b> — <code class="sha">{{sha}}</code>의 메시지는 “{{X}}”지만, 실제 diff는 {{Y}}였다.
+            </div>
+
+            <div class="evidence">
+              <div class="ev-title">근거 커밋</div>
+              <div class="ev-item"><code class="sha">{{sha}}</code> {{메시지}} — {{실제로 무엇}} · {{이름}}</div>
+            </div>
+          </div>
+        </details>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ================================================= 4. 분석 근거 -->
+  <div class="panel" id="p-basis" role="tabpanel" hidden>
+
+    <!-- 병합 커밋이 하나도 없으면 이 섹션을 통째로 뺀다. -->
+    <section>
+      <h2>브랜치 통합 역할 <span class="h2-note">병합 {{P}}건{{ — 전부 코드 변경 없는 순수 통합}}</span></h2>
+      <table class="plain">
+        <thead><tr><th scope="col">사람</th><th scope="col">병합</th><th scope="col">내역</th></tr></thead>
+        <tbody>
+          <tr><td style="color: var(--p1); font-weight: 600">{{이름}}</td><td>{{n}}건</td><td class="mono-cell">{{PR 번호·브랜치명}}</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>신원 병합 근거</h2>
+      <table class="plain">
+        <thead><tr><th scope="col">사람</th><th scope="col">author 문자열</th><th scope="col">근거</th></tr></thead>
+        <tbody>
+          <!-- 자동 병합인지 사용자 확인 후 병합인지 반드시 구분해 적는다. -->
+          <tr>
+            <td style="color: var(--p1); font-weight: 600">{{이름}}<br><span style="font-weight:400;color:var(--ink-3);font-size:13px">{{커밋수}}</span></td>
+            <td class="mono-cell">{{name}} &lt;{{email}}&gt;<br>{{name2}} &lt;{{email2}}&gt;</td>
+            <td>{{어떤 신호로 합쳤는지}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="lede" style="font-size:14px">{{a}} + {{b}} + {{c}} = {{N}} — 전체 커밋 수와 일치한다.</p>
+    </section>
+
+    <section>
+      <h2>분석 커버리지 <span class="h2-note">{{N}}건을 모두 같은 깊이로 읽지는 않았다</span></h2>
+
+      <div class="cov-bar" role="img" aria-label="커버리지 구성: diff 직접 읽음 {{M3}}건, 메시지만으로 분류 {{M2}}건, 병합 {{P}}건">
+        <div class="cov-seg" style="flex: {{M3}}; background: var(--p1)"></div>
+        <div class="cov-seg" style="flex: {{M2}}; background: var(--p2)"></div>
+        <div class="cov-seg" style="flex: {{P}}; background: var(--rule-strong)"></div>
+      </div>
+
+      <div class="cov-grid">
+        <div class="cov-cell">
+          <span class="cov-num" style="color: var(--p1)">{{M3}}</span>
+          <span class="cov-lab">diff를 직접 읽음<br><span style="color:var(--ink-3)">커버리지 {{K1}} · 신뢰도 {{K2}}</span></span>
+        </div>
+        <div class="cov-cell">
+          <span class="cov-num" style="color: var(--p2)">{{M2}}</span>
+          <span class="cov-lab">메시지 + 파일 경로만으로 분류</span>
+        </div>
+        <div class="cov-cell">
+          <span class="cov-num" style="color: var(--ink-3)">{{P}}</span>
+          <span class="cov-lab">병합 커밋</span>
+        </div>
+        <div class="cov-cell">
+          <span class="cov-num" style="color: var(--flag)">{{n}}</span>
+          <span class="cov-lab">메시지 ≠ 실제 diff</span>
+        </div>
+      </div>
+
+      <ul class="notes">
+        <li>{{N}} = {{P}}(병합) + {{M1}}(사전 필터·공백 스킵) + {{M2}}(메시지만) + {{M3}}(diff 읽음) — 검산 일치.</li>
+        <li>레포 구조는 <b>{{병렬형|계층형}}</b>으로 판단했다. {{이유 한 줄}}</li>
+        <li>{{판단이 확정적이지 않은 지점 — 병렬 브랜치, 제외한 디렉터리 등. 없으면 뺀다.}}</li>
+        <li>AI 보조 사용 여부는 판별하지 않는다. <code class="sha">Co-Authored-By</code> 트레일러는 기본으로 꺼두는 경우가 흔해 신뢰할 수 없어, git author 자체를 귀속 기준으로 삼았다.</li>
+      </ul>
+    </section>
+
+  </div>
+
+</div>
+
+<script>
+  (function () {
+    /* --- tabs --- */
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        tabs.forEach(function (o) {
+          var on = o === t;
+          o.setAttribute('aria-selected', on ? 'true' : 'false');
+          document.getElementById('p-' + o.getAttribute('data-tab')).hidden = !on;
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    /* --- person filter (applies across every tab) --- */
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.person-card'));
+    var rows = Array.prototype.slice.call(document.querySelectorAll('tr.leaf-row'));
+    var series = Array.prototype.slice.call(document.querySelectorAll('.series'));
+    var mrows = Array.prototype.slice.call(document.querySelectorAll('.mrow'));
+    var clearBtn = document.getElementById('clearFilter');
+    var status = document.getElementById('filterStatus');
+    var active = null;
+
+    function mark(list, attr) {
+      list.forEach(function (el) {
+        var v = el.getAttribute(attr) || '';
+        var hit = active !== null && v.split(' ').indexOf(active) !== -1;
+        el.classList.toggle('hit', hit);
+        el.classList.toggle('on', hit);
+      });
+    }
+
+    function apply() {
+      document.body.classList.toggle('filtering', active !== null);
+      mark(rows, 'data-people');
+      mark(series, 'data-person');
+      mark(mrows, 'data-person');
+      cards.forEach(function (c) {
+        c.setAttribute('aria-pressed', c.getAttribute('data-person') === active ? 'true' : 'false');
+      });
+      if (active === null) {
+        clearBtn.hidden = true; status.textContent = '';
+      } else {
+        var n = cards.filter(function (c) { return c.getAttribute('data-person') === active; })[0];
+        clearBtn.hidden = false;
+        status.textContent = n.querySelector('.person-name').textContent.trim() + ' 기여만 표시 중';
+      }
+    }
+
+    cards.forEach(function (card) {
+      card.addEventListener('click', function () {
+        var p = card.getAttribute('data-person');
+        active = (active === p) ? null : p;
+        apply();
+      });
+    });
+    clearBtn.addEventListener('click', function () { active = null; apply(); });
+  })();
+</script>
