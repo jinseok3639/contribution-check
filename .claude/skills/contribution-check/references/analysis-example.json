@@ -1,0 +1,98 @@
+{
+  "_comment": "render_report.py 입력 스키마의 최소 예시. 실제 분석에서는 taxonomy/narratives가 훨씬 길어진다. 세는 값(소분류 개수, 사람별 관여 수, 역할 집계, rowspan, 차트 좌표)은 절대 여기 적지 않는다 — 렌더러가 계산한다. 여기 담는 것은 '판단'뿐이다.",
+
+  "repo": {
+    "name": "myrepo",
+    "path": "sample_repo/myrepo",
+    "branch": "main",
+    "title": "한 줄로 이 레포가 뭔지",
+    "period_start": "2025-01-05",
+    "period_end": "2025-03-20",
+    "structure": "계층형",
+    "levels": 3
+  },
+
+  "people": [
+    {"slug": "alice", "name": "Alice", "alias": "alice-dev", "commits": 40, "merges": 6,
+     "blurb": "이 사람이 뭘 한 사람인지 한 줄. 기능 이름 위주로."},
+    {"slug": "bob", "name": "Bob", "alias": null, "commits": 18, "merges": 0,
+     "blurb": "..."}
+  ],
+
+  "_comment_taxonomy": "levels가 2면 taxonomy 원소의 name을 null로 두고 mids만 채운다 (대분류 열이 표에서 빠진다). 모든 중분류는 소분류를 최소 1개 가져야 하고, 모든 소분류는 기여자를 최소 1명 가져야 한다 — 아니면 렌더러가 exit 1.",
+  "taxonomy": [
+    {
+      "name": "A. 코어 엔진",
+      "mids": [
+        {
+          "name": "A.1 쓰기 경로",
+          "leaves": [
+            {
+              "name": "원자적 쓰기",
+              "anchor": "write()",
+              "contribs": [
+                {"who": "alice", "role": "주도", "shas": ["a1b2c3d"],
+                 "diff_read": true, "mismatch": null},
+                {"who": "bob", "role": "수정", "shas": ["e4f5a6b", "c7d8e9f"],
+                 "diff_read": false,
+                 "mismatch": "c7d8e9f — 메시지는 'cleanup'이지만 실제로는 재시도 횟수를 3→1로 줄인 동작 변경"}
+              ]
+            },
+            {"name": "포맷 디스패치", "anchor": null,
+             "contribs": [{"who": "alice", "role": "주도", "shas": ["11aa22b"], "diff_read": true, "mismatch": null}]}
+          ]
+        }
+      ]
+    }
+  ],
+
+  "_comment_narratives": "헤더는 중분류 단위 이상으로만 만든다 (소분류마다 쪼개지 않는다). 문자열 안에 인라인 HTML을 써도 된다 — markdown 출력에서는 태그가 벗겨진다. 관용적으로 쓰는 것: <code class=\"sha\">sha</code>, <span class=\"by\" style=\"--pc: var(--p1)\">이름</span>.",
+  "narratives": [
+    {
+      "title": "쓰기 경로",
+      "people": ["alice", "bob"],
+      "paras": [
+        "<span class=\"by\" style=\"--pc: var(--p1)\">Alice</span>가 임시 파일에 쓴 뒤 교체하는 골격을 만들었다."
+      ],
+      "callout": "<code class=\"sha\">c7d8e9f</code>의 메시지는 “cleanup”이지만 실제로는 재시도 횟수를 줄인 동작 변경이다.",
+      "evidence": [
+        "<code class=\"sha\">a1b2c3d</code> 원자적 쓰기 최초 구현 · Alice"
+      ]
+    }
+  ],
+
+  "_comment_timeline": "사람별 '누적' 커밋 수. 커밋이 있었던 날만 넣으면 되고, 마지막 항목은 people.commits와 정확히 같아야 한다. 차트 좌표·눈금·날짜 라벨은 렌더러가 계산한다.",
+  "timeline": [
+    {"date": "2025-01-05", "counts": {"alice": 3, "bob": 0}},
+    {"date": "2025-02-10", "counts": {"alice": 25, "bob": 7}},
+    {"date": "2025-03-20", "counts": {"alice": 40, "bob": 18}}
+  ],
+
+  "_comment_merges": "병합 커밋이 없으면 빈 배열 — 그러면 '브랜치 통합 역할' 섹션 자체가 빠진다.",
+  "merges": [
+    {"who": "alice", "count": 6, "detail": "PR #3 · #7 · #11"}
+  ],
+
+  "identities": [
+    {"slug": "alice", "authors": ["Alice <alice@example.com>", "alice-dev <1234+alice@users.noreply.github.com>"],
+     "basis": "GitHub noreply 고유 ID 일치로 <b>자동 병합</b>."},
+    {"slug": "bob", "authors": ["Bob <bob@example.com>"], "basis": "단일 author."}
+  ],
+
+  "_comment_coverage": "total = merge + prefilter + message_only + diff_read 가 맞지 않으면 exit 1. read_reason_* 는 diff를 연 이유별 내역(겹칠 수 있어 합이 diff_read와 달라도 된다), 생략 가능.",
+  "coverage": {
+    "total": 58,
+    "merge": 6,
+    "prefilter": 2,
+    "message_only": 30,
+    "diff_read": 20,
+    "read_reason_coverage": 14,
+    "read_reason_reliability": 9
+  },
+
+  "_comment_notes": "커버리지 검산 문장은 렌더러가 자동으로 맨 앞에 넣는다. 여기에는 판단의 한계만 적는다.",
+  "notes": [
+    "레포 구조는 <b>계층형</b>으로 판단했다. ...",
+    "AI 보조 사용 여부는 판별하지 않는다. <code class=\"sha\">Co-Authored-By</code> 트레일러는 신뢰할 수 없어 git author 자체를 귀속 기준으로 삼았다."
+  ]
+}
