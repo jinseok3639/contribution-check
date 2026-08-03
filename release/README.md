@@ -4,6 +4,8 @@
 
 GitHub Insights나 라인 수 기반 기여도 도구는 두 가지 문제가 있다. 포맷팅·보일러플레이트·리네이밍만으로도 라인 수는 쉽게 부풀릴 수 있고(게이밍하기 쉽다), 버그를 잡은 한 줄과 자동 생성된 코드 500줄이 라인 수로는 구분되지 않는다(가치를 반영 못 한다). 이 스킬은 커밋 수·라인 수·퍼센트 대신 대/중/소분류 기능 트리를 세우고 각 기능에 누가 어떻게 관여했는지를 문장으로 쓰되, **모든 판단에 근거 커밋 SHA를 붙인다.** 팀원이 직접 열어보고 반박할 수 있게 하는 것이 목적이다.
 
+**[예시 리포트 보기](https://htmlpreview.github.io/?https://github.com/jinseok3639/contribution-check/blob/samples/atio-main_result.html)**
+
 ## 설치
 
 모든 프로젝트에서 쓰려면:
@@ -71,7 +73,7 @@ git -C ~/.claude/skills/contribution-check pull
 | `{repo}-{branch}_result.md` | 같은 내용의 Markdown |
 | `{repo}-{branch}_analysis.json` | 판단 원본. 고쳐서 렌더러만 다시 돌릴 수 있다 |
 
-실제로 어떻게 나오는지: **[예시 리포트 보기](https://htmlpreview.github.io/?https://github.com/jinseok3639/contribution-check/blob/samples/atio-main_result.html)**
+**[예시 리포트 보기](https://htmlpreview.github.io/?https://github.com/jinseok3639/contribution-check/blob/samples/atio-main_result.html)**
 
 HTML 탭 구성:
 
