@@ -11,13 +11,13 @@ GitHub Insights나 라인 수 기반 기여도 도구는 두 가지 문제가 �
 모든 프로젝트에서 쓰려면:
 
 ```
-git clone https://github.com/jinseok3639/contribution_check.git ~/.claude/skills/contribution-check
+git clone https://github.com/jinseok3639/contribution-check.git ~/.claude/skills/contribution-check
 ```
 
 특정 프로젝트에서만 쓰려면 그 프로젝트 루트에서:
 
 ```
-git clone https://github.com/jinseok3639/contribution_check.git .claude/skills/contribution-check
+git clone https://github.com/jinseok3639/contribution-check.git .claude/skills/contribution-check
 ```
 
 zip으로 받았다면 압축을 풀고 폴더 이름을 `contribution-check`로 바꿔서 위 경로에 넣는다. 설치 후 Claude Code를 다시 켜야 스킬이 잡힌다.
@@ -109,6 +109,7 @@ scripts/survey_commits.py         정량 조사: 커밋·신원 후보·메시�
 scripts/render_report.py          analysis.json -> HTML + Markdown
 references/report-template.html   리포트 스타일·스크립트 원본
 references/analysis-example.json  analysis.json 스키마 예시
+references/design-notes.md        규칙별 근거와 설계 배경
 ```
 
 ## 라이선스
